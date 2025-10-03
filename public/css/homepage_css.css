@@ -1,0 +1,106 @@
+ body, html {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      overflow: hidden;
+      font-family: sans-serif;
+    }
+
+    /* Make video full-screen */
+video#bgVideo {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      z-index: -1;
+    }
+
+    /* Container for sprites */
+.sprite {
+      position: absolute;
+      width: 80px;
+      height: 80px;
+      background-size: cover;
+      pointer-events: none;
+      animation: float linear infinite;
+    }
+
+@keyframes float {
+      0% { transform: translateY(100vh) translateX(0) rotate(0deg);}
+      100% { transform: translateY(-100px) translateX(50px) rotate(360deg);}
+    }
+
+/* Container positions the button slightly below center */
+/* Position bottom right */
+.button-container {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  z-index: 10;
+}
+
+/* Arrow button */
+.github-button {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 28px 12px 20px;
+  background: linear-gradient(135deg, rgba(129, 212, 250, 0.8), rgba(79, 195, 247, 0.8));
+  color: white;
+  text-decoration: none;
+  font-size: 18px;
+  font-weight: 600;
+  border-radius: 12px 0 0 12px;
+  position: relative;
+  transition: all 0.2s ease;
+  box-shadow: 0 6px rgba(0,0,0,0.3);
+  overflow: visible;
+}
+
+/* Arrow tip with transparency */
+.github-button::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: -24px;
+  width: 0;
+  height: 0;
+  border-top: 28px solid transparent;
+  border-bottom: 28px solid transparent;
+  border-left: 24px solid rgba(79, 195, 247, 0.8); /* transparent gradient look */
+  border-radius: 0 6px 6px 0;
+}
+
+/* Logo size */
+.github-button img {
+  width: 32px;
+  height: 32px;
+}
+
+/* Hover pulse */
+.github-button:hover {
+  animation: pulse 1s infinite;
+}
+
+@keyframes pulse {
+  0%   { transform: translateY(-2px) scale(1); }
+  50%  { transform: translateY(-2px) scale(1.05); }
+  100% { transform: translateY(-2px) scale(1); }
+}
+
+/* Active click */
+.github-button:active {
+  transform: translateY(2px);
+  box-shadow: 0 2px rgba(0,0,0,0.3);
+}
+
+/* Gradient text */
+.button-text {
+  background: linear-gradient(135deg, #FFF59D, #FFE57F);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+
