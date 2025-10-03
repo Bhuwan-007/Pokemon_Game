@@ -1,0 +1,19 @@
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  width: 100%;
+  background: #000; /* solid black background */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+
+
+#bgImg {
+  width: 100vw;   /* take full viewport width */
+  height: 100vh;  /* take full viewport height */
+  object-fit: cover;  /* ensures it fills without stretching weirdly */
+}
+
