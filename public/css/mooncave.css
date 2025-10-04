@@ -1,0 +1,122 @@
+/* === General Layout Reset === */
+body, html {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  overflow: hidden;
+  font-family: 'Poppins', sans-serif;
+}
+
+/* === Background Video === */
+#bgVideo {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  object-fit: cover;
+  z-index: -1;
+}
+
+/* === Content Overlay (Welcome text fadeout) === */
+.content {
+  z-index: 1;
+  backdrop-filter: blur(4px);
+  background: rgba(0, 0, 0, 0.3);
+  padding: 30px 50px;
+  border-radius: 20px;
+  box-shadow: 0 0 30px rgba(255, 255, 255, 0.3);
+  animation: fadeOutAndHide 0s forwards;
+  animation-delay: 2s;
+}
+
+.welcome {
+  color: white;
+  font-size: 2.5rem;
+  margin-bottom: 5px;
+  letter-spacing: 1px;
+  animation: fadeOutAndHide 0s forwards;
+  animation-delay: 2s;
+}
+
+@keyframes fadeOutAndHide {
+  to {
+    opacity: 0;
+    visibility: hidden;
+    width: 0;
+    height: 0;
+    overflow: hidden;
+  }
+}
+
+/* === Stone Buttons === */
+/* stone buttons container - full viewport */
+.stone-buttons-container {
+  position: fixed;    /* fixed so it always overlays the video */
+  inset: 0;           /* top:0; right:0; bottom:0; left:0; */
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none; /* allow only buttons to receive clicks */
+}
+
+/* buttons themselves */
+.stone-btn {
+  position: absolute;
+  transform: translate(-50%, -50%); /* center the button at left/top */
+  pointer-events: auto;             /* re-enable events for buttons */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  /* visible styling for review */
+  width: 6.2vw;      /* responsive width */
+  height: 9.0vh;     /* responsive height */
+  font-size: 0.95vw;
+  font-weight: 700;
+  color: #fff;
+  background: rgba(255,255,255,0.12); /* <--- TEMP visible overlay for review */
+  border-radius: 0.6vw;
+  border: 1px solid rgba(0,0,0,0.35);
+  text-shadow: 0 0 6px rgba(0,0,0,0.8);
+  transition: transform .12s ease, box-shadow .12s ease;
+}
+
+.stone-btn:hover{
+  transform: translate(-50%,-50%) scale(1.06);
+  box-shadow: 0 0 14px rgba(135,206,250,0.85);
+}
+
+/* -- When you're ready to make them invisible: --
+.stone-btn {
+  background: transparent;   <-- uncomment to hide visually
+  color: transparent;        <-- uncomment to hide label text
+  border: none;
+}
+You can also remove the inner text (or leave it) — your onclick can show the ancient text overlay.
+*/
+
+/* === Precise anchor coordinates (computed from your screenshot)
+   These are the *centers* of each rock (left and top are percentages).
+   Buttons are positioned by JS (recommended) but these static rules are a fallback. */
+.stone-1  { left:  8.36vw; top: 73.90vh; }
+.stone-2  { left: 13.74vw; top: 80.46vh; }
+.stone-3  { left: 19.29vw; top: 76.31vh; }
+.stone-4  { left: 22.93vw; top: 84.91vh; }
+.stone-5  { left: 32.32vw; top: 76.17vh; }
+.stone-6  { left: 37.11vw; top: 81.27vh; }
+.stone-7  { left: 42.38vw; top: 84.51vh; }
+.stone-8  { left: 49.56vw; top: 84.51vh; }
+.stone-9  { left: 54.90vw; top: 84.51vh; }
+.stone-10 { left: 57.32vw; top: 84.51vh; }
+.stone-11 { left: 60.01vw; top: 82.13vh; }
+.stone-12 { left: 68.14vw; top: 82.46vh; }
+.stone-13 { left: 72.17vw; top: 82.75vh; }
+.stone-14 { left: 78.14vw; top: 73.74vh; }
+.stone-15 { left: 84.11vw; top: 74.33vh; }
+.stone-16 { left: 90.76vw; top: 73.53vh; }
+
+/* If you prefer to use the static rules only, they should be applied exactly as above.
+   However — because the video uses object-fit: cover and the browser crops/zooms the frame
+   depending on viewport/aspect ratio — the JS below is strongly recommended for robust placement. */
+
+
