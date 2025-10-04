@@ -20,9 +20,9 @@ const stoneAnchors = [
   {x: 0.6001, y: 0.8313},
   {x: 0.6445, y: 0.7840},
   {x: 0.7050, y: 0.8025},
-  {x: 0.7714, y: 0.7493},
-  {x: 0.8411, y: 0.7433},
-  {x: 0.9076, y: 0.7353}
+  {x: 0.7714, y: 0.7573},
+  {x: 0.8411, y: 0.7579},
+  {x: 0.9076, y: 0.7493}
 ];
 
 function placeStoneButtonsOverVideo() {
@@ -76,4 +76,58 @@ function ensureVideoThenPlace() {
 document.addEventListener('DOMContentLoaded', ensureVideoThenPlace);
 
 window.addEventListener('resize', () => placeButtons(video));
+
+// --- Stone click handler setup --- //
+// --- Glowing top banner setup --- //
+const textContainer = document.getElementById("stone-text-container");
+
+// Define your messages (you’ll edit these later)
+const stoneTexts = {
+  1: "This is the Index of the Moon Cave...",
+  2: "The tale begins with an Introduction...",
+  3: "Git — the sacred tool of collaboration...",
+  4: "Open Source — the eternal flame of sharing...",
+  5: "GitHub — GitHub is a web-based platform built around Git, a powerful, distributed version control system (DVCS). It offers cloud hosting for Git repositories, allowing developers worldwide to store, track changes, and collaborate on code projects efficiently. Beyond just version control, GitHub provides a user-friendly interface and social coding features that are essential for collaborative software development, especially for open-source projects. It acts as a central hub where code is managed, shared, and reviewed.",
+  6: "The Forum — where the seekers gather...",
+  7: "Repositories — the archives of power...",
+  8: "Fork — the path of divergence...",
+  9: "Clone — the mirror of creation...",
+  10: "Branches — the threads of destiny...",
+  11: "Committing — engraving your will into history...",
+  12: "Pushing and Pulling — the dance of exchange...",
+  13: "Pull Request — the offering of contribution...",
+  14: "Merging — the unification of efforts...",
+  15: "Collaboration — the heart of progress...",
+  16: "Order — the balance within chaos..."
+};
+
+document.querySelectorAll(".stone-btn").forEach((btn, i) => {
+  btn.addEventListener("click", () => {
+    showAncientText(i + 1);
+  });
+});
+
+function showAncientText(stoneId) {
+  const text = stoneTexts[stoneId];
+  if (!text) return;
+
+  // If already showing, hide first
+  if (textContainer.classList.contains("show")) {
+    textContainer.classList.remove("show");
+    setTimeout(() => updateText(text), 300);
+  } else {
+    updateText(text);
+  }
+}
+
+function updateText(content) {
+  textContainer.innerText = content;
+  textContainer.classList.add("show");
+
+  // Auto-hide after 5 seconds (optional)
+  clearTimeout(window._textTimeout);
+  window._textTimeout = setTimeout(() => {
+    textContainer.classList.remove("show");
+  }, 10000);
+}
 

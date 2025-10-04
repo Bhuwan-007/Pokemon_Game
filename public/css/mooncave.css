@@ -84,6 +84,7 @@ body, html {
 .stone-btn:hover{
   transform: translate(-50%,-50%) scale(1.06);
   box-shadow: 0 0 14px rgba(135,206,250,0.85);
+  cursor: pointer;
 }
 
 /*
@@ -94,6 +95,36 @@ body, html {
 }
 You can also remove the inner text (or leave it) — your onclick can show the ancient text overlay.
 */
+/* Ancient glowing text popup */
+/* Ancient glowing top banner */
+#stone-text-container {
+  position: fixed;
+  top: 6vh;             /* leaves top margin */
+  left: 6vw;            /* side margin */
+  width: 80vw;          /* leaves margin on both sides */
+  padding: 2vh 4vw;
+  text-align: center;
+  font-family: 'Uncial Antiqua', cursive;
+  font-size: 2vw;
+  color: white;
+  background: rgba(255, 255, 255, 0.1); /* faint glow base */
+  box-shadow: 0 0 25px 10px rgba(255, 255, 255, 0.5);
+  border-radius: 20px;
+  backdrop-filter: blur(8px);
+  opacity: 0;
+  transform: scale(0.97);
+  transition: opacity 0.6s ease, transform 0.5s ease;
+  z-index: 10;          /* above stones and video */
+  pointer-events: none; /* doesn’t block buttons below */
+}
+
+/* When visible */
+#stone-text-container.show {
+  opacity: 1;
+  transform: scale(1);
+}
+
+
 
 
 
