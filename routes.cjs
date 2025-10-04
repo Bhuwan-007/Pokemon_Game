@@ -14,6 +14,9 @@ app.use(express.static(path.join(__dirname, "public")));
 app.get("/", (req, res) => {
     res.sendFile(path.join(__dirname, 'main.html'));
 });
+app.get("/mooncave", (req, res) => {
+    res.sendFile(path.join(__dirname, 'mooncave.html'));
+})
 
 
 app.listen(3000, () => {
