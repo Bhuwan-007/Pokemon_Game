@@ -74,3 +74,6 @@ function ensureVideoThenPlace() {
   window.requestAnimationFrame(placeStoneButtonsOverVideo);
 }
 document.addEventListener('DOMContentLoaded', ensureVideoThenPlace);
+
+window.addEventListener('resize', () => placeButtons(video));
+
