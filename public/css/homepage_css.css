@@ -36,7 +36,7 @@ video#bgVideo {
 .button-container {
   position: absolute;
   bottom: 20px;
-  right: 20px;
+  right: 35px;
   z-index: 10;
 }
 
@@ -93,6 +93,67 @@ video#bgVideo {
 .github-button:active {
   transform: translateY(2px);
   box-shadow: 0 2px rgba(0,0,0,0.3);
+}
+
+.lab-button-container {
+  position: absolute;
+  top: 40px;
+  right: 35px;
+  z-index: 10;
+}
+
+.lab-button {
+    /* Resetting/Adding necessary properties */
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    
+    /* Use a unique color/gradient for distinction */
+    background: linear-gradient(135deg, rgba(255, 102, 102, 0.8), rgba(204, 0, 0, 0.8)); /* Fiery/Lab Red Gradient */
+    color: white;
+    text-decoration: none;
+    font-size: 18px;
+    font-weight: 600;
+    
+    /* Apply padding and positioning */
+    padding: 12px 28px 12px 20px;
+    border-radius: 12px 0 0 12px;
+    position: relative; /* ESSENTIAL for pseudo-element positioning */
+    transition: all 0.2s ease;
+    box-shadow: 0 6px rgba(0,0,0,0.3);
+    overflow: visible;
+}
+
+.lab-button::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: -29px; /* Extends the arrow outside the box */
+    width: 0;
+    height: 0;
+    
+    /* Create the arrow shape */
+    border-top: 28px solid transparent; /* Half of button height */
+    border-bottom: 28px solid transparent; /* Half of button height */
+    
+    /* The visible arrow color MUST match the background's darker side */
+    border-left: 30px solid rgba(204, 0, 0, 0.8); 
+    border-radius: 0 6px 6px 0;
+}
+
+/* Hover/Active effects for the .lab-button */
+.lab-button:hover {
+    animation: pulse 1s infinite;
+}
+
+.lab-button:active {
+    transform: translateY(2px);
+    box-shadow: 0 2px rgba(0,0,0,0.3);
+}
+
+.lab-button img {
+  width: 32px;
+  height: 32px;
 }
 
 /* Gradient text */
