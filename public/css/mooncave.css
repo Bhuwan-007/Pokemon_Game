@@ -123,6 +123,63 @@ body, html {
   transform: scale(1);
 }
 
+#secretText {
+  display: none;
+  position: fixed;
+  top: 6vh;
+  left: 6vw;
+  width: 80vw;
+  padding: 2vh 4vw;
+  text-align: center;
+  font-family: 'MedievalSharp', cursive;
+  font-size: 2vw;
+  color: white;
+  background: rgba(255, 255, 255, 0.1); /* faint glow base */
+  box-shadow: 0 0 25px 10px rgba(255, 255, 255, 0.5);
+  border-radius: 20px;
+  backdrop-filter: blur(8px);
+  z-index: 999;
+  opacity: 0;
+  transform: scale(0.97);
+  transition: opacity 0.6s ease, transform 0.5s ease;
+  pointer-events: none;
+}
+
+/* Fade + subtle pulsing glow for ancient effect */
+#secretText.show {
+  display: block;
+  opacity: 1;
+  transform: scale(1);
+  animation: glowPulse 2.5s ease-in-out infinite alternate;
+}
+
+@keyframes glowPulse {
+  from { box-shadow: 0 0 15px 4px rgba(255,255,255,0.4); }
+  to   { box-shadow: 0 0 35px 14px rgba(255,255,255,0.8); }
+}
+
+
+  /* ===== Invisible Button (hidden trap) ===== */
+  #glitter {
+    position: absolute;
+    top: 37%;   
+    left: 19%;  
+    width: 90px; 
+    height: 115px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    z-index: 100;
+  }
+
+  /*
+  #glitter {
+    background: rgba(255,255,255,0.2);
+    border: 1px solid white;
+  }
+  */
+  
+
 
 
 

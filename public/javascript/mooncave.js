@@ -131,3 +131,17 @@ function updateText(content) {
   }, 10000);
 }
 
+const button = document.getElementById('glitter');
+const text = document.getElementById('secretText');
+
+button.addEventListener('click', () => {
+  text.classList.add('show');
+  setTimeout(() => {
+    text.classList.remove('show');
+  }, 2500);
+
+  setTimeout(() => {
+    window.location.href = 'https://youtu.be/xvFZjo5PgG0?si=6sUKyZiYVz4if9XK';
+  }, 1500);
+});
+
