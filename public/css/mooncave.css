@@ -1,0 +1,187 @@
+/* === General Layout Reset === */
+body, html {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  overflow: hidden;
+  font-family: 'Poppins', sans-serif;
+}
+
+/* === Background Video === */
+#bgVideo {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  object-fit: cover;
+  z-index: -1;
+}
+
+/* === Content Overlay (Welcome text fadeout) === */
+.content {
+  z-index: 1;
+  backdrop-filter: blur(4px);
+  background: rgba(0, 0, 0, 0.3);
+  padding: 30px 50px;
+  border-radius: 20px;
+  box-shadow: 0 0 30px rgba(255, 255, 255, 0.3);
+  animation: fadeOutAndHide 0s forwards;
+  animation-delay: 2s;
+}
+
+.welcome {
+  color: white;
+  font-size: 2.5rem;
+  margin-bottom: 5px;
+  letter-spacing: 1px;
+  animation: fadeOutAndHide 0s forwards;
+  animation-delay: 2s;
+}
+
+@keyframes fadeOutAndHide {
+  to {
+    opacity: 0;
+    visibility: hidden;
+    width: 0;
+    height: 0;
+    overflow: hidden;
+  }
+}
+
+/* === Stone Buttons === */
+/* stone buttons container - full viewport */
+.stone-buttons-container {
+  position: fixed;    /* fixed so it always overlays the video */
+  inset: 0;           /* top:0; right:0; bottom:0; left:0; */
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none; /* allow only buttons to receive clicks */
+}
+
+/* buttons themselves */
+.stone-btn {
+  position: absolute;
+  transform: translate(-50%, -50%); /* center the button at left/top */
+  pointer-events: auto;             /* re-enable events for buttons */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  /* visible styling for review */
+  width: 6.2vw;      /* responsive width */
+  height: 9.0vh;     /* responsive height */
+  font-size: 0.95vw;
+  font-weight: 700;
+  color: #fff;
+  background: rgba(255,255,255,0.12); /* <--- TEMP visible overlay for review */
+  border-radius: 0.6vw;
+  border: 1px solid rgba(0,0,0,0.35);
+  text-shadow: 0 0 6px rgba(0,0,0,0.8);
+  transition: transform .12s ease, box-shadow .12s ease;
+}
+
+.stone-btn:hover{
+  transform: translate(-50%,-50%) scale(1.06);
+  box-shadow: 0 0 14px rgba(135,206,250,0.85);
+  cursor: pointer;
+}
+
+
+.stone-btn {
+  background: transparent;   
+  color: transparent;        
+  border: none;
+}
+
+/* Ancient glowing text popup */
+/* Ancient glowing top banner */
+#stone-text-container {
+  position: fixed;
+  top: 6vh;             /* leaves top margin */
+  left: 6vw;            /* side margin */
+  width: 80vw;          /* leaves margin on both sides */
+  padding: 2vh 4vw;
+  text-align: center;
+  font-family: 'MedievalSharp', cursive;
+  font-size: 2vw;
+  color: white;
+  background: rgba(255, 255, 255, 0.1); /* faint glow base */
+  box-shadow: 0 0 25px 10px rgba(255, 255, 255, 0.5);
+  border-radius: 20px;
+  backdrop-filter: blur(8px);
+  opacity: 0;
+  transform: scale(0.97);
+  transition: opacity 0.6s ease, transform 0.5s ease;
+  z-index: 10;          /* above stones and video */
+  pointer-events: none; /* doesn’t block buttons below */
+}
+
+/* When visible */
+#stone-text-container.show {
+  opacity: 1;
+  transform: scale(1);
+}
+
+#secretText {
+  display: none;
+  position: fixed;
+  top: 6vh;
+  left: 6vw;
+  width: 80vw;
+  padding: 2vh 4vw;
+  text-align: center;
+  font-family: 'MedievalSharp', cursive;
+  font-size: 2vw;
+  color: white;
+  background: rgba(255, 255, 255, 0.1); /* faint glow base */
+  box-shadow: 0 0 25px 10px rgba(255, 255, 255, 0.5);
+  border-radius: 20px;
+  backdrop-filter: blur(8px);
+  z-index: 999;
+  opacity: 0;
+  transform: scale(0.97);
+  transition: opacity 0.6s ease, transform 0.5s ease;
+  pointer-events: none;
+}
+
+/* Fade + subtle pulsing glow for ancient effect */
+#secretText.show {
+  display: block;
+  opacity: 1;
+  transform: scale(1);
+  animation: glowPulse 2.5s ease-in-out infinite alternate;
+}
+
+@keyframes glowPulse {
+  from { box-shadow: 0 0 15px 4px rgba(255,255,255,0.4); }
+  to   { box-shadow: 0 0 35px 14px rgba(255,255,255,0.8); }
+}
+
+
+  /* ===== Invisible Button (hidden trap) ===== */
+  #glitter {
+    position: absolute;
+    top: 37%;   
+    left: 19%;  
+    width: 90px; 
+    height: 115px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    z-index: 100;
+  }
+
+  /*
+  #glitter {
+    background: rgba(255,255,255,0.2);
+    border: 1px solid white;
+  }
+  */
+  
+
+
+
+
+
+
