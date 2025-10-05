@@ -8,18 +8,18 @@ document.addEventListener("DOMContentLoaded", () => {
 // These are fractions [0..1], measured from the original screenshot frame.
 const stoneAnchors = [
   {x: 0.0900, y: 0.7390},
-  {x: 0.1634, y: 0.7531},
-  {x: 0.2329, y: 0.7331},
-  {x: 0.2832, y: 0.7590},
-  {x: 0.3432, y: 0.7817},
+  {x: 0.1534, y: 0.7581},
+  {x: 0.2290, y: 0.7431},
+  {x: 0.2810, y: 0.7680},
+  {x: 0.3350, y: 0.7847},
   {x: 0.3860, y: 0.8077},
   {x: 0.4290, y: 0.8471},
   {x: 0.4727, y: 0.8451},
   {x: 0.5180, y: 0.8473},
-  {x: 0.5532, y: 0.8473},
+  {x: 0.5562, y: 0.8473},
   {x: 0.6001, y: 0.8313},
   {x: 0.6445, y: 0.7840},
-  {x: 0.7050, y: 0.8025},
+  {x: 0.7050, y: 0.7990},
   {x: 0.7714, y: 0.7573},
   {x: 0.8411, y: 0.7579},
   {x: 0.9076, y: 0.7493}
@@ -81,26 +81,21 @@ window.addEventListener('resize', () => placeButtons(video));
 // --- Glowing top banner setup --- //
 const textContainer = document.getElementById("stone-text-container");
 
-// Define your messages (you’ll edit these later)
-const stoneTexts = {
-  1: "This is the Index of the Moon Cave...",
-  2: "The tale begins with an Introduction...",
-  3: "Git — the sacred tool of collaboration...",
-  4: "Open Source — the eternal flame of sharing...",
-  5: "GitHub — GitHub is a web-based platform built around Git, a powerful, distributed version control system (DVCS). It offers cloud hosting for Git repositories, allowing developers worldwide to store, track changes, and collaborate on code projects efficiently. Beyond just version control, GitHub provides a user-friendly interface and social coding features that are essential for collaborative software development, especially for open-source projects. It acts as a central hub where code is managed, shared, and reviewed.",
-  6: "The Forum — where the seekers gather...",
-  7: "Repositories — the archives of power...",
-  8: "Fork — the path of divergence...",
-  9: "Clone — the mirror of creation...",
-  10: "Branches — the threads of destiny...",
-  11: "Committing — engraving your will into history...",
-  12: "Pushing and Pulling — the dance of exchange...",
-  13: "Pull Request — the offering of contribution...",
-  14: "Merging — the unification of efforts...",
-  15: "Collaboration — the heart of progress...",
-  16: "Order — the balance within chaos..."
-};
+let stoneTexts = {}; // initially empty
 
+fetch('/data/stoneTexts.json')
+  .then(res => {
+    if (!res.ok) throw new Error('Failed to load stone texts');
+    return res.json();
+  })
+  .then(data => {
+    stoneTexts = data;
+    console.log(' Stone texts loaded:', stoneTexts);
+  })
+  .catch(err => console.error(' Error fetching stone texts:', err));
+
+
+// --- Stone click handler setup --- //
 document.querySelectorAll(".stone-btn").forEach((btn, i) => {
   btn.addEventListener("click", () => {
     showAncientText(i + 1);
@@ -108,6 +103,12 @@ document.querySelectorAll(".stone-btn").forEach((btn, i) => {
 });
 
 function showAncientText(stoneId) {
+  // 🆕 Safety check: make sure data is loaded first
+  if (Object.keys(stoneTexts).length === 0) {
+    console.warn("⏳ Stone texts not yet loaded!");
+    return;
+  }
+
   const text = stoneTexts[stoneId];
   if (!text) return;
 
@@ -124,7 +125,6 @@ function updateText(content) {
   textContainer.innerText = content;
   textContainer.classList.add("show");
 
-  // Auto-hide after 5 seconds (optional)
   clearTimeout(window._textTimeout);
   window._textTimeout = setTimeout(() => {
     textContainer.classList.remove("show");
