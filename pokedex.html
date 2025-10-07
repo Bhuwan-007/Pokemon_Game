@@ -3,34 +3,55 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Pokédex</title>
     <link rel="stylesheet" href="/css/pokedex.css">
 </head>
 <body>
-   <div class="pokedex">
-    <div class="half left"></div>
+    <div class="pokedex">
 
-    <!-- Center glowing screen -->
-    <div class="screen">
-      <div class="inner-glow"></div>
-      <div class="pokemon-display">
-        <h2>Pokédex Entries</h2>
-        <div class="entries">
-          <div class="entry">⚡ Pikachu — Electric Type</div>
-          <div class="entry">🔥 Charmander — Fire Type</div>
-          <div class="entry">💧 Squirtle — Water Type</div>
+        <!-- Left half: search button -->
+        <div class="half left">
+            <button id="search-btn" class="control-btn search-btn">🔍</button>
         </div>
-      </div>
-    </div>
 
-    <div class="half right">
-      <div class="controls">
-        <button id="open-btn" class="control-btn">⟫</button>
-        <button id="close-btn" class="control-btn">⟪</button>
-      </div>
+        <!-- Glowing Screen -->
+        <div class="screen">
+            <div class="inner-glow"></div>
+
+            <div class="screen-content">
+                <!-- Search container -->
+                <div class="search-container">
+                    <input type="text" id="searchId" placeholder="Enter UID" class="search-box">
+                    <button class="control-btn" id="search-go">Go</button>
+                </div>
+
+                <!-- Pokémon Sprites Row -->
+                <div class="pokemon-display">
+                    <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/25.gif"
+                        class="pokemon-sprite" data-uid="1" data-name="Pikachu" data-type="Electric" data-line="Electric type and full of energy!">
+                    <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/4.gif"
+                        class="pokemon-sprite" data-uid="2" data-name="Charmander" data-type="Fire" data-line="Fire type with a burning tail!">
+                    <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/7.gif"
+                        class="pokemon-sprite" data-uid="3" data-name="Squirtle" data-type="Water" data-line="Water type with a tough shell!">
+                </div>
+
+                <!-- Detailed view: left sprite, right info -->
+                <div class="detail-view">
+                    <div class="detail-sprite"></div>
+                    <div class="detail-info"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right half: open/close buttons -->
+        <div class="half right">
+            <div class="controls">
+                <button id="open-btn" class="control-btn">⟫</button>
+                <button id="close-btn" class="control-btn">⟪</button>
+            </div>
+        </div>
+
     </div>
-  </div>
-  
 
     <script src="/javascript/pokedex.js"></script>
 </body>

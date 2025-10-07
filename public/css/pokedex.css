@@ -1,3 +1,4 @@
+/* === Body & Centering === */
 body {
   background: radial-gradient(circle at center, #0a0a0a, #000);
   height: 100vh;
@@ -12,8 +13,8 @@ body {
 /* === Pokedex Container === */
 .pokedex {
   position: relative;
-  width: 480px;   /* narrower width */
-  height: 90vh;   /* taller, covers most of the screen */
+  width: 480px;
+  height: 90vh;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -39,24 +40,48 @@ body {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  width: 120px;
-  height: 120px;
+  width: 200px;
+  height: 200px;
   background: #000;
   border: 3px solid #333;
   border-radius: 50%;
   z-index: 2;
 }
+.half::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%;
+  height: 100%;
+  background:
+    repeating-linear-gradient(
+      45deg,
+      rgba(255,255,255,0.25) 0,   /* brighter / darker lines */
+      rgba(255,255,255,0.25) 2px,
+      transparent 2px,
+      transparent 8px
+    ),
+    radial-gradient(rgba(0,255,255,0.25) 1px, transparent 1px);  /* brighter techy dots */
+  background-size: 30px 30px, 20px 20px;
+  border-radius: 30px;
+  z-index: 1;
+  pointer-events: none;
+}
+
+
+
+
 
 .left { left: 0; }
-.left::after { right: -60px; }
+.left::after { right: -100px; }
 
 .right { right: 0; }
-.right::after { left: -60px; }
+.right::after { left: -100px; }
 
-/* === Glowing Screen in the Middle === */
+/* === Glowing Screen === */
 .screen {
-  position: absolute;
-  width: 0;
+  position: absolute;   /* important for alignment */
+  width: 0;             /* expands when open */
   height: 80%;
   border-radius: 18px;
   background: linear-gradient(180deg, rgba(0,255,255,0.25), rgba(0,255,255,0.05));
@@ -67,80 +92,109 @@ body {
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding: 20px;       /* safe padding */
+  box-sizing: border-box;
 }
 
+/* Inner Glow */
 .inner-glow {
   position: absolute;
+  top: 0; left: 0;
   width: 100%;
   height: 100%;
   background: radial-gradient(circle at 50% 50%, rgba(0,255,255,0.25), transparent 60%);
   animation: pulse 3s infinite alternate ease-in-out;
   z-index: 0;
+  pointer-events: none;
 }
 
-@keyframes pulse {
-  from { opacity: 0.5; }
-  to { opacity: 1; }
-}
+@keyframes pulse { from {opacity: 0.5;} to {opacity:1;} }
 
-/* === Pokémon Display === */
+/* === Pokémon Sprites === */
 .pokemon-display {
-  position: relative;
-  z-index: 1;
-  color: white;
-  text-align: center;
-  padding: 10px;
-  height: 100%;
   display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
-
-.entries {
+  flex-direction: row;
+  gap: 10px;
   margin-top: 10px;
+  overflow-x: hidden;  /* remove scroll bar */
+  z-index: 2;
+}
+
+.pokemon-sprite {
+  width: 60px;
+  height: 60px;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.pokemon-sprite:hover { transform: scale(1.2); }
+
+/* === Detail View === */
+.detail-view {
+  display: none;
+  width: 100%;
+  height: 100%;
+  gap: 30px;
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding: 20px;
+  z-index: 2;
   display: flex;
-  flex-direction: column;
-  gap: 8px;
+}
+
+.detail-sprite img {
+  width: 350px;
+  height: 350px;
+}
+
+.detail-info {
+  color: #00ffff;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 25px;
+  line-height: 1.4;
+  max-width: 80%;
+}
+
+/* === Search Bar === */
+.search-container {
+  display: none;
+  flex-direction: row;
+  gap: 10px;
+  margin-top: 10px;
+  z-index: 2;
+  position: relative;
+}
+
+.search-box {
+  width: 120px;
+  padding: 5px;
+  border-radius: 10px;
+  border: 2px solid #00ffff;
+  background: rgba(0,0,0,0.4);
+  color: #00ffff;
+  text-align: center;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 14px;
+}
+
+#search-go {
+  width: 40px;
+  height: 40px;
   font-size: 16px;
-  overflow-y: auto;
-  max-height: 70%;
-  scrollbar-width: thin;
 }
 
-.entries::-webkit-scrollbar {
-  width: 6px;
+/* === Left Search Button === */
+.left .search-btn {
+  position: absolute;
+  top: 50%;
+  left: 10px;
+  transform: translateY(-50%);
+  z-index: 5;
 }
 
-.entries::-webkit-scrollbar-thumb {
-  background: #00ffff66;
-  border-radius: 10px;
-}
-
-.entry {
-  background: rgba(255,255,255,0.1);
-  padding: 8px 14px;
-  border-radius: 10px;
-  box-shadow: 0 0 10px #00ffff33 inset;
-  backdrop-filter: blur(4px);
-}
-
-/* === Open Animation === */
-.open .left {
-  transform: translateX(-35vw); /* move left half wide but not off-screen */
-}
-
-.open .right {
-  transform: translateX(35vw);  /* move right half wide but not off-screen */
-}
-
-.open .screen {
-  width: 70vw;   /* almost full width but safe */
-  opacity: 1;
-}
-
-/* === Control Buttons on Right Half === */
+/* === Right Control Buttons === */
 .controls {
   position: absolute;
   top: 50%;
@@ -149,10 +203,10 @@ body {
   display: flex;
   flex-direction: column;
   gap: 20px;
-  z-index: 5;
+  z-index: 10; /* clickable above screen */
 }
 
-.control-btn {
+.control-btn, .search-btn {
   background: radial-gradient(circle at top left, #ff4c4c, #a30000);
   border: 2px solid #000;
   border-radius: 50%;
@@ -165,11 +219,12 @@ body {
   transition: transform 0.2s, box-shadow 0.2s;
 }
 
-.control-btn:hover {
+.control-btn:hover, .search-btn:hover {
   transform: scale(1.1);
   box-shadow: 0 0 20px #ff000066 inset, 0 0 8px #ff0000;
 }
-/* Search button on left half */
 
-
-
+/* === Open Animation === */
+.open .left { transform: translateX(-35vw); }
+.open .right { transform: translateX(35vw); }
+.open .screen { width: 70vw; opacity: 1; }
