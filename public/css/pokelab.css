@@ -53,3 +53,13 @@ body, html {
   box-shadow: 0 0 500px rgba(2, 147, 237, 0.85);
   cursor: pointer;
 }
+.pokedex-btn-container a,
+.pokedex-btn-container a:focus,
+.pokedex-btn-container a:active,
+.pokedex-btn-container a:visited {
+    outline: none; 
+    text-decoration: none; 
+}
+.pokedex-btn {
+    outline: none; 
+}

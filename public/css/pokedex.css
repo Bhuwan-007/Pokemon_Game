@@ -1,0 +1,175 @@
+body {
+  background: radial-gradient(circle at center, #0a0a0a, #000);
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0;
+  overflow: hidden;
+  font-family: 'Orbitron', sans-serif;
+}
+
+/* === Pokedex Container === */
+.pokedex {
+  position: relative;
+  width: 480px;   /* narrower width */
+  height: 90vh;   /* taller, covers most of the screen */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* === Left + Right Halves === */
+.half {
+  position: absolute;
+  top: 0;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(145deg, #d20000, #8b0000);
+  border-radius: 30px;
+  border: 3px solid #000;
+  box-shadow: inset 0 0 25px #550000;
+  transition: transform 1s ease-in-out;
+  z-index: 3;
+}
+
+/* Hinge circles */
+.half::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 120px;
+  height: 120px;
+  background: #000;
+  border: 3px solid #333;
+  border-radius: 50%;
+  z-index: 2;
+}
+
+.left { left: 0; }
+.left::after { right: -60px; }
+
+.right { right: 0; }
+.right::after { left: -60px; }
+
+/* === Glowing Screen in the Middle === */
+.screen {
+  position: absolute;
+  width: 0;
+  height: 80%;
+  border-radius: 18px;
+  background: linear-gradient(180deg, rgba(0,255,255,0.25), rgba(0,255,255,0.05));
+  box-shadow: 0 0 50px #00ffffaa;
+  opacity: 0;
+  transition: all 1s ease-in-out;
+  z-index: 1;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.inner-glow {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle at 50% 50%, rgba(0,255,255,0.25), transparent 60%);
+  animation: pulse 3s infinite alternate ease-in-out;
+  z-index: 0;
+}
+
+@keyframes pulse {
+  from { opacity: 0.5; }
+  to { opacity: 1; }
+}
+
+/* === Pokémon Display === */
+.pokemon-display {
+  position: relative;
+  z-index: 1;
+  color: white;
+  text-align: center;
+  padding: 10px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.entries {
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-size: 16px;
+  overflow-y: auto;
+  max-height: 70%;
+  scrollbar-width: thin;
+}
+
+.entries::-webkit-scrollbar {
+  width: 6px;
+}
+
+.entries::-webkit-scrollbar-thumb {
+  background: #00ffff66;
+  border-radius: 10px;
+}
+
+.entry {
+  background: rgba(255,255,255,0.1);
+  padding: 8px 14px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px #00ffff33 inset;
+  backdrop-filter: blur(4px);
+}
+
+/* === Open Animation === */
+.open .left {
+  transform: translateX(-35vw); /* move left half wide but not off-screen */
+}
+
+.open .right {
+  transform: translateX(35vw);  /* move right half wide but not off-screen */
+}
+
+.open .screen {
+  width: 70vw;   /* almost full width but safe */
+  opacity: 1;
+}
+
+/* === Control Buttons on Right Half === */
+.controls {
+  position: absolute;
+  top: 50%;
+  right: 25px;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  z-index: 5;
+}
+
+.control-btn {
+  background: radial-gradient(circle at top left, #ff4c4c, #a30000);
+  border: 2px solid #000;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  color: white;
+  font-size: 20px;
+  cursor: pointer;
+  box-shadow: 0 0 10px #660000 inset;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.control-btn:hover {
+  transform: scale(1.1);
+  box-shadow: 0 0 20px #ff000066 inset, 0 0 8px #ff0000;
+}
+/* Search button on left half */
+
+
+

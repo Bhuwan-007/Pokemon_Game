@@ -20,6 +20,9 @@ app.get("/mooncave", (req, res) => {
 app.get("/pokelab", (req, res) => {
     res.sendFile(path.join(__dirname, 'pokelab.html'));
 })
+app.get("/pokedex", (req, res) => {
+    res.sendFile(path.join(__dirname, 'pokedex.html'));
+})
 
 
 app.listen(3000, () => {
