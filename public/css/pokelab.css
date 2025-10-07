@@ -15,3 +15,41 @@ body, html {
   object-fit: cover;
   z-index: -1;
 }
+@media (max-width: 600px) {
+  #bgVideo {
+    object-fit: contain;
+  }
+}
+.pokedex-btn-container {
+  position: absolute;
+  top: 158px;
+  right: 76px;
+  z-index: 10;
+  opacity: 0;
+  pointer-events: none; /* Prevents accidental clicks while invisible */
+  transition: opacity 1s ease-in; /* Smooth fade-in effect */
+}
+.pokedex-btn-container.buttons-visible {
+  opacity: 1;
+  pointer-events: auto; /* Enables clicks when visible */
+}
+.pokedex-btn {
+  width: 263px;
+  height: 162px;
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  position: relative;
+  transition: all 0.2s ease;
+  box-shadow: none;
+  overflow: visible;
+  color: transparent;
+  background-color: transparent;
+  border: none;
+  border-radius: 8px;
+}
+
+.pokedex-btn:hover {
+  box-shadow: 0 0 500px rgba(2, 147, 237, 0.85);
+  cursor: pointer;
+}
