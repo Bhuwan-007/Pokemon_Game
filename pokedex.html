@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pokédex</title>
+    <link rel="stylesheet" href="/css/pokedex.css">
+</head>
+<body>
+    <div class="pokedex">
+
+        <!-- Left half: search button -->
+        <div class="half left">
+            <button id="search-btn" class="control-btn search-btn">🔍</button>
+        </div>
+
+        <!-- Glowing Screen -->
+        <div class="screen">
+            <div class="inner-glow"></div>
+
+            <div class="screen-content">
+                <!-- Search container -->
+                <div class="search-container">
+                    <input type="text" id="searchId" placeholder="Enter UID" class="search-box">
+                    <button class="control-btn" id="search-go">Go</button>
+                </div>
+
+                <!-- Pokémon Sprites Row -->
+                <div class="pokemon-display">
+                </div>
+
+                <!-- Detailed view: left sprite, right info -->
+                <div class="detail-view">
+                    <div class="detail-sprite"></div>
+                    <div class="detail-info"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right half: open/close buttons -->
+        <div class="half right">
+            <div class="controls">
+                <button id="open-btn" class="control-btn">⟫</button>
+                <button id="close-btn" class="control-btn">⟪</button>
+            </div>
+        </div>
+
+    </div>
+
+    <script src="/javascript/pokedex.js"></script>
+</body>
+</html>

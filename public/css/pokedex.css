@@ -1,0 +1,230 @@
+/* === Body & Centering === */
+body {
+  background: radial-gradient(circle at center, #0a0a0a, #000);
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0;
+  overflow: hidden;
+  font-family: 'Orbitron', sans-serif;
+}
+
+/* === Pokedex Container === */
+.pokedex {
+  position: relative;
+  width: 480px;
+  height: 90vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* === Left + Right Halves === */
+.half {
+  position: absolute;
+  top: 0;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(145deg, #d20000, #8b0000);
+  border-radius: 30px;
+  border: 3px solid #000;
+  box-shadow: inset 0 0 25px #550000;
+  transition: transform 1s ease-in-out;
+  z-index: 3;
+}
+
+/* Hinge circles */
+.half::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 200px;
+  height: 200px;
+  background: #000;
+  border: 3px solid #333;
+  border-radius: 50%;
+  z-index: 2;
+}
+.half::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%;
+  height: 100%;
+  background:
+    repeating-linear-gradient(
+      45deg,
+      rgba(255,255,255,0.25) 0,   /* brighter / darker lines */
+      rgba(255,255,255,0.25) 2px,
+      transparent 2px,
+      transparent 8px
+    ),
+    radial-gradient(rgba(0,255,255,0.25) 1px, transparent 1px);  /* brighter techy dots */
+  background-size: 30px 30px, 20px 20px;
+  border-radius: 30px;
+  z-index: 1;
+  pointer-events: none;
+}
+
+
+
+
+
+.left { left: 0; }
+.left::after { right: -100px; }
+
+.right { right: 0; }
+.right::after { left: -100px; }
+
+/* === Glowing Screen === */
+.screen {
+  position: absolute;   /* important for alignment */
+  width: 0;             /* expands when open */
+  height: 80%;
+  border-radius: 18px;
+  background: linear-gradient(180deg, rgba(0,255,255,0.25), rgba(0,255,255,0.05));
+  box-shadow: 0 0 50px #00ffffaa;
+  opacity: 0;
+  transition: all 1s ease-in-out;
+  z-index: 1;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding: 20px;       /* safe padding */
+  box-sizing: border-box;
+}
+
+/* Inner Glow */
+.inner-glow {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle at 50% 50%, rgba(0,255,255,0.25), transparent 60%);
+  animation: pulse 3s infinite alternate ease-in-out;
+  z-index: 0;
+  pointer-events: none;
+}
+
+@keyframes pulse { from {opacity: 0.5;} to {opacity:1;} }
+
+/* === Pokémon Sprites === */
+.pokemon-display {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  margin-top: 10px;
+  overflow-x: hidden;  /* remove scroll bar */
+  z-index: 2;
+}
+
+.pokemon-sprite {
+  width: 60px;
+  height: 60px;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.pokemon-sprite:hover { transform: scale(1.2); }
+
+/* === Detail View === */
+.detail-view {
+  display: none;
+  width: 100%;
+  height: 100%;
+  gap: 30px;
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding: 20px;
+  z-index: 2;
+  display: flex;
+}
+
+.detail-sprite img {
+  width: 300px;
+  height: 300px;
+}
+
+.detail-info {
+  color: #00ffff;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 18px;
+  line-height: 1.4;
+  max-width: 75%;
+}
+
+/* === Search Bar === */
+.search-container {
+  display: none;
+  flex-direction: row;
+  gap: 10px;
+  margin-top: 10px;
+  z-index: 2;
+  position: relative;
+}
+
+.search-box {
+  width: 120px;
+  padding: 5px;
+  border-radius: 10px;
+  border: 2px solid #00ffff;
+  background: rgba(0,0,0,0.4);
+  color: #00ffff;
+  text-align: center;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 14px;
+}
+
+#search-go {
+  width: 40px;
+  height: 40px;
+  font-size: 16px;
+}
+
+/* === Left Search Button === */
+.left .search-btn {
+  position: absolute;
+  top: 50%;
+  left: 10px;
+  transform: translateY(-50%);
+  z-index: 5;
+}
+
+/* === Right Control Buttons === */
+.controls {
+  position: absolute;
+  top: 50%;
+  right: 25px;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  z-index: 10; /* clickable above screen */
+}
+
+.control-btn, .search-btn {
+  background: radial-gradient(circle at top left, #ff4c4c, #a30000);
+  border: 2px solid #000;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  color: white;
+  font-size: 20px;
+  cursor: pointer;
+  box-shadow: 0 0 10px #660000 inset;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.control-btn:hover, .search-btn:hover {
+  transform: scale(1.1);
+  box-shadow: 0 0 20px #ff000066 inset, 0 0 8px #ff0000;
+}
+
+/* === Open Animation === */
+.open .left { transform: translateX(-35vw); }
+.open .right { transform: translateX(35vw); }
+.open .screen { width: 70vw; opacity: 1; }

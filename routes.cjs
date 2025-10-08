@@ -17,6 +17,12 @@ app.get("/", (req, res) => {
 app.get("/mooncave", (req, res) => {
     res.sendFile(path.join(__dirname, 'mooncave.html'));
 })
+app.get("/pokelab", (req, res) => {
+    res.sendFile(path.join(__dirname, 'pokelab.html'));
+})
+app.get("/pokedex", (req, res) => {
+    res.sendFile(path.join(__dirname, 'pokedex.html'));
+})
 
 
 app.listen(3000, () => {

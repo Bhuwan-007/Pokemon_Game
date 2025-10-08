@@ -1,0 +1,57 @@
+name: Process New Pokedex Entry
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+    # Restrict trigger to only submission files
+    paths:
+      - 'submissions/*.yaml'
+
+jobs:
+  update-pokedex:
+    runs-on: ubuntu-latest
+    
+    # Needs contents: write to update the JSON and pull-requests: write to merge the PR
+    permissions:
+      contents: write 
+      pull-requests: write # <-- CRITICAL FOR AUTO-MERGE
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          
+      - name: Install dependencies (from package.json)
+        # Installs js-yaml and node-fetch defined in your package.json
+        run: npm ci
+
+      - name: Run Pokedex Update Script & Validate Name
+        # If the script fails (returns exit code 1 due to bad Pokemon name), the job stops here.
+        run: node scripts/update-pokedex.js ${{ github.event.pull_request.number }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_REPOSITORY: ${{ github.repository }} 
+          
+      - name: Commit JSON Changes
+        # This commits the *updated* JSON file to the source branch (pokelab)
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: 'Pokedex Update: Added new entry from PR #${{ github.event.pull_request.number }}'
+          files: 'public/data/pokedex_data.json'
+          
+      - name: Auto-Merge the Pull Request
+        # This step ONLY runs if all previous steps (including the script/validation) succeeded.
+        uses: pascalgn/automerge-action@v0.16.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          # Squash ensures a clean, single history entry on the main branch
+          merge_options: --squash
+          merge_method: squash
+          allow_unauthorized_authors: true

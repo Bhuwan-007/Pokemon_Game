@@ -76,14 +76,14 @@ body, html {
   color: #fff;
   background: rgba(255,255,255,0.12); /* <--- TEMP visible overlay for review */
   border-radius: 0.6vw;
-  border: 1px solid rgba(0,0,0,0.35);
+  /*border: 1px solid rgba(0,0,0,0.35);
   text-shadow: 0 0 6px rgba(0,0,0,0.8);
-  transition: transform .12s ease, box-shadow .12s ease;
+  transition: transform .12s ease, box-shadow .12s ease;*/
 }
 
 .stone-btn:hover{
-  transform: translate(-50%,-50%) scale(1.06);
-  box-shadow: 0 0 14px rgba(135,206,250,0.85);
+  /*transform: translate(-50%,-50%) scale(1.06);
+  box-shadow: 0 0 14px rgba(135,206,250,0.85);*/
   cursor: pointer;
 }
 
