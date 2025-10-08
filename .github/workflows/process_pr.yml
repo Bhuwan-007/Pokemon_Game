@@ -28,7 +28,6 @@ jobs:
           node-version: '20'
           
       - name: Install dependencies (from package.json)
-        # Installs js-yaml and node-fetch defined in your package.json
         run: npm ci
 
       - name: Run Pokedex Update Script & Validate Name
@@ -45,13 +44,21 @@ jobs:
           commit_message: 'Pokedex Update: Added new entry from PR #${{ github.event.pull_request.number }}'
           files: 'public/data/pokedex_data.json'
           
-      - name: Auto-Merge the Pull Request
-        # This step ONLY runs if all previous steps (including the script/validation) succeeded.
-        uses: pascalgn/automerge-action@v0.16.0
+      # --- NEW AUTO-MERGE STEP ---
+      # This uses a simple CLI command after the commit is pushed
+      - name: Final Auto-Merge
+        # Only run if the commit action above was successful
+        if: success()
+        run: |
+          PR_NUMBER=${{ github.event.pull_request.number }}
+          REPO_NAME=${{ github.repository }}
+          
+          # Use the GitHub CLI to merge the PR cleanly
+          # Note: We use squash merge to keep history clean
+          gh pr merge "$PR_NUMBER" --squash --auto --delete-branch
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # Install GitHub CLI (gh) tool
+        uses: cli/cli-action@v1
         with:
-          # Squash ensures a clean, single history entry on the main branch
-          merge_options: --squash
-          merge_method: squash
-          allow_unauthorized_authors: true
+          version: 2.37.0
