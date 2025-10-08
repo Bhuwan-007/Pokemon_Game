@@ -5,6 +5,7 @@ const fetch = require('node-fetch');
 
 // --- Configuration ---
 // Path to the JSON data file (located in the repo root)
+// This path is correct relative to the scripts/ folder
 const DATA_FILE = path.join(__dirname, '..', 'public', 'data', 'pokedex_data.json'); 
 const POKEAPI_BASE = 'https://pokeapi.co/api/v2/pokemon/';
 const GITHUB_API_BASE = 'https://api.github.com/repos/';
@@ -113,7 +114,11 @@ async function main() {
 
         // Process each new YAML file
         for (const filePath of changedYamlFiles) {
-            const absolutePath = path.join(path.dirname(DATA_FILE), '..', filePath);
+            // === THE FIX IS HERE ===
+            // Calculate absolute path correctly relative to the repo root
+            const absolutePath = path.join(__dirname, '..', filePath); 
+            // =========================
+            
             const newEntry = await processEntry(absolutePath);
             
             if (newEntry) {
@@ -142,14 +147,11 @@ async function main() {
 
 
     } catch (error) {
-        // If the processEntry exited with 1, this block won't run, but good for general errors
-        if (error.message.includes('VALIDATION FAILED')) {
-             // Suppress default error output as processEntry already provided a clear message.
-        } else {
+        // If the error is not the expected validation failure, log it as a critical error.
+        if (!error.message.includes('VALIDATION FAILED')) {
             console.error("A critical error occurred:", error.message);
+            process.exit(1); 
         }
-        // Ensure job fails if we reach here due to an unexpected error
-        process.exit(1); 
     }
 }
 
