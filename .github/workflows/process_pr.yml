@@ -3,7 +3,6 @@ name: Process New Pokedex Entry
 on:
   pull_request:
     types: [opened, synchronize, reopened]
-    # Only run if a file in the submissions/ directory is added or modified
     paths:
       - 'submissions/*.yaml'
 
@@ -11,7 +10,6 @@ jobs:
   update-pokedex:
     runs-on: ubuntu-latest
     
-    # Permissions are needed to allow the action to commit and push changes back
     permissions:
       contents: write 
 
@@ -19,7 +17,6 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
         with:
-          # Fetch depth 0 is important to get full history for file comparison
           fetch-depth: 0
 
       - name: Set up Node.js
@@ -31,15 +28,15 @@ jobs:
         run: npm install js-yaml node-fetch
 
       - name: Run Pokedex Update Script
-        # We pass the PR number to the script to get the changed files
         run: node scripts/update-pokedex.js ${{ github.event.pull_request.number }}
         env:
-          # The GitHub token is automatically available for committing
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # Pass the repository name for the GitHub API call in the script
+          GITHUB_REPOSITORY: ${{ github.repository }} 
           
       - name: Commit and Push changes
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: 'Pokedex Update: Added new entry from PR #${{ github.event.pull_request.number }}'
-          # Only commit the updated JSON file
-          files: 'pokedex_data.json'
+          # CRITICAL PATH UPDATE: Commit the file in its new location
+          files: 'public/data/pokedex_data.json'
