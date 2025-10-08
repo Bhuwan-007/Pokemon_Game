@@ -4,29 +4,24 @@ const yaml = require('js-yaml');
 const fetch = require('node-fetch');
 
 // --- Configuration ---
-// CRITICAL: Path must point to public/data/pokedex_data.json relative to the script's location (scripts/)
+// Path to the JSON data file (located in the repo root)
 const DATA_FILE = path.join(__dirname, '..', 'public', 'data', 'pokedex_data.json'); 
 const POKEAPI_BASE = 'https://pokeapi.co/api/v2/pokemon/';
 const GITHUB_API_BASE = 'https://api.github.com/repos/';
-// Path to find the animated sprite URL inside the PokeAPI JSON response
+// Path to the animated sprites in PokeAPI JSON response
 const SPRITE_PATH = ['sprites', 'versions', 'generation-v', 'black-white', 'animated', 'front_default'];
 // ---------------------
 
-/**
- * Helper to safely extract a deeply nested value from an object.
- */
 function getNested(obj, keys) {
+    // Helper function to safely navigate complex JSON structures
     return keys.reduce((current, key) => (current && current[key] !== undefined) ? current[key] : null, obj);
 }
 
-/**
- * Fetches the list of added/modified YAML files in the current Pull Request.
- */
 async function getChangedFiles(prNumber, repo) {
     const url = `${GITHUB_API_BASE}${repo}/pulls/${prNumber}/files`;
     const response = await fetch(url, {
         headers: {
-            // Token is required to query the GitHub API for PR details
+            // Need the token and User-Agent for GitHub API requests
             'Authorization': `token ${process.env.GITHUB_TOKEN}`,
             'Accept': 'application/vnd.github.v3+json',
             'User-Agent': 'GitHub-Pokedex-Bot' 
@@ -34,45 +29,52 @@ async function getChangedFiles(prNumber, repo) {
     });
     
     if (!response.ok) {
-        throw new Error(`Failed to fetch PR files: ${response.statusText}`);
+        throw new Error(`Failed to fetch PR files from GitHub API: ${response.statusText}`);
     }
 
     const files = await response.json();
-    // Filter for files that were added or modified in the 'submissions' folder
+    // Filter for new/modified YAML files in the 'submissions' folder
     return files
         .filter(f => f.status === 'added' || f.status === 'modified')
         .map(f => f.filename)
         .filter(filename => filename.startsWith('submissions/') && filename.endsWith('.yaml'));
 }
 
-/**
- * Processes a single YAML file, fetches PokeAPI data, and returns a structured entry.
- */
 async function processEntry(filePath) {
-    // 1. Read and parse the YAML submission file
     const yamlContent = await fs.readFile(filePath, 'utf8');
     const entry = yaml.load(yamlContent);
     const pokemonName = entry.pokemon_name.toLowerCase().trim();
 
-    // 2. Fetch official data from PokeAPI
+    console.log(`Processing entry for: ${entry.pokemon_name}...`);
+
+    // 1. Fetch data from PokeAPI
     const apiResponse = await fetch(`${POKEAPI_BASE}${pokemonName}`);
+    
+    // === CRITICAL VALIDATION CHECK ===
     if (!apiResponse.ok) {
-        console.warn(`Could not find Pokemon in PokeAPI: ${pokemonName}. Skipping.`);
-        return null;
+        // If the API call fails (usually 404 Not Found), we assume a misspelling.
+        console.error(`\n--- POKÉAPI VALIDATION FAILED ---`);
+        console.error(`Error: Could not find the Pokémon "${entry.pokemon_name}".`);
+        console.error(`Please check the spelling in your YAML file and resubmit.`);
+        console.error(`----------------------------------\n`);
+        
+        // Exiting with code 1 fails the GitHub job, preventing the auto-merge.
+        process.exit(1);
     }
     const pokeData = await apiResponse.json();
+    // =================================
 
-    // 3. Extract the animated sprite URL and official ID
+    // 2. Extract the animated sprite URL
     const spriteUrl = getNested(pokeData, SPRITE_PATH);
 
     if (!spriteUrl) {
-        console.warn(`Could not find animated sprite for ${pokemonName}. Skipping.`);
+        console.warn(`Could not find animated sprite URL for ${pokemonName}. Skipping.`);
         return null; 
     }
 
-    // 4. Create the final Pokedex entry object
+    // 3. Create the new Pokedex entry object
     return {
-        id: pokeData.id, // The official UID/ID
+        id: pokeData.id,
         name: entry.pokemon_name,
         note: entry.trainer_note.trim(),
         sprite: spriteUrl,
@@ -81,22 +83,16 @@ async function processEntry(filePath) {
     };
 }
 
-/**
- * Main function: orchestrates the reading, processing, and writing of the Pokedex data.
- */
 async function main() {
     const prNumber = process.argv[2];
     const repo = process.env.GITHUB_REPOSITORY; 
     
     if (!prNumber || !repo) {
-        console.error("Missing PR number or repository environment variable. Exiting.");
+        console.error("Missing PR number or repository environment variable.");
         process.exit(1);
     }
     
     try {
-        console.log(`Starting Pokedex update for PR #${prNumber} on repo ${repo}`);
-        
-        // 1. Identify which YAML files were added/changed in the PR
         const changedYamlFiles = await getChangedFiles(prNumber, repo);
 
         if (changedYamlFiles.length === 0) {
@@ -104,7 +100,7 @@ async function main() {
             return;
         }
 
-        // 2. Load existing Pokedex data
+        // Load existing Pokedex data
         let pokedexData = [];
         try {
             const dataString = await fs.readFile(DATA_FILE, 'utf8');
@@ -113,33 +109,47 @@ async function main() {
             console.warn("Pokedex data file not found or empty. Starting fresh.");
         }
 
-        // 3. Process new YAML submissions
+        let newEntriesAdded = false;
+
+        // Process each new YAML file
         for (const filePath of changedYamlFiles) {
-            // Ensure the script can locate the file checked out by the action
-            const absolutePath = path.join(path.dirname(DATA_FILE), '..', '..', filePath);
-            
+            const absolutePath = path.join(path.dirname(DATA_FILE), '..', filePath);
             const newEntry = await processEntry(absolutePath);
             
             if (newEntry) {
-                // Check if a Pokémon with this ID already exists
+                // Prevent duplicates based on official ID
                 const isDuplicate = pokedexData.some(entry => entry.id === newEntry.id);
                 if (!isDuplicate) {
                     pokedexData.push(newEntry);
-                    console.log(`Successfully added entry for ${newEntry.name}.`);
+                    newEntriesAdded = true;
+                    console.log(`Successfully added entry for ${newEntry.name} (ID: ${newEntry.id}).`);
                 } else {
-                    console.log(`${newEntry.name} (ID: ${newEntry.id}) already exists. Skipping addition.`);
+                    console.log(`${newEntry.name} (ID: ${newEntry.id}) already exists. Skipping duplicate entry.`);
                 }
             }
         }
         
-        // 4. Write the final, sorted data back to the JSON file
-        pokedexData.sort((a, b) => a.id - b.id);
-        await fs.writeFile(DATA_FILE, JSON.stringify(pokedexData, null, 2));
-        console.log(`Successfully updated ${DATA_FILE}. Total entries: ${pokedexData.length}`);
+        // Only write and commit if actual changes were made
+        if (newEntriesAdded) {
+            // Sort data by ID and write back
+            pokedexData.sort((a, b) => a.id - b.id);
+            await fs.writeFile(DATA_FILE, JSON.stringify(pokedexData, null, 2));
+            console.log(`\n--- JSON DATABASE UPDATED SUCCESSFULLY ---`);
+            console.log(`Pushed changes will trigger the auto-merge.`);
+        } else {
+            console.log("No unique new entries found. JSON file remains unchanged.");
+        }
+
 
     } catch (error) {
-        console.error("A critical error occurred during main process:", error.message);
-        process.exit(1);
+        // If the processEntry exited with 1, this block won't run, but good for general errors
+        if (error.message.includes('VALIDATION FAILED')) {
+             // Suppress default error output as processEntry already provided a clear message.
+        } else {
+            console.error("A critical error occurred:", error.message);
+        }
+        // Ensure job fails if we reach here due to an unexpected error
+        process.exit(1); 
     }
 }
 
