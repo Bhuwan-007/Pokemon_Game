@@ -1,7 +1,8 @@
 name: Process New Pokedex Entry
 
+# Use pull_request_target instead of pull_request
 on:
-  pull_request:
+  pull_request_target:
     types: [opened, synchronize, reopened]
     paths:
       - 'submissions/*.yaml'
@@ -38,7 +39,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GH_PAT }}
           GITHUB_REPOSITORY: ${{ github.repository }}
 
-      # 🧠 Handle validation result
       - name: Check validation result
         id: check
         run: |
@@ -63,7 +63,6 @@ jobs:
               2. The Pokémon name is spelled correctly and exists on [PokeAPI](https://pokeapi.co/)
               3. The YAML format matches the required template
 
-      # ✅ Commit only if everything is valid
       - name: Commit JSON Changes
         if: success()
         uses: stefanzweifel/git-auto-commit-action@v5
@@ -71,18 +70,17 @@ jobs:
           commit_message: 'Pokedex Update: Added new entry from PR #${{ github.event.pull_request.number }}'
           files: 'public/data/pokedex_data.json'
 
-      # --- Auto Merge Step using GH_PAT ---
       - name: Install GitHub CLI
         if: success()
         run: |
           sudo apt-get update
           sudo apt-get install -y gh
 
-      - name: Final Auto-Merge
+      - name: Auto Merge PR
         if: success()
         run: |
           echo "Attempting auto-merge for PR #${{ github.event.pull_request.number }}"
-          gh auth login --with-token <<< "${{ secrets.GH_PAT }}"
+          echo "${{ secrets.GH_PAT }}" | gh auth login --with-token
           gh pr merge ${{ github.event.pull_request.number }} --squash --delete-branch
         env:
           GH_PAT: ${{ secrets.GH_PAT }}
