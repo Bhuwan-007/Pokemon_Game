@@ -49,28 +49,22 @@ git add submissions/pikachu.yaml
 git commit -m "Add Pikachu submission"
 git push origin main
 ```
-
 Open a Pull Request
 Navigate to your fork on GitHub and click Compare & Pull Request. Submit the PR. Once it passes validation (checks the Pokémon exists on PokeAPI
 ), it will automatically merge!
-
 🎉 Your Pokémon will now appear in the live Pokédex!
 
 2. Pokémon Generator (Work in Progress)
-
 Generate a Pokémon customized just for you based on your traits and preferences. This is a creative and fun way to see what kind of Pokémon represents you.
 
 3. Pokémon Card Generator (Work in Progress)
-
 Design a Pokémon card for your custom Pokémon, complete with:
 -> Moves
 -> Health
 -> Special traits
-
 Visualize your unique Pokémon in full card glory!
 
 4. Poké Arena (Work in Progress)
-
 Battle your Pokémon in the Poké Arena!
 Train your Pokémon to test their moves and strategies
 Engage in fun battles with AI or other users’ Pokémon (coming soon!)
@@ -83,7 +77,6 @@ GitHub Guide
 
 
 🚀 How to Run Locally
-
 Clone the repository:
 ```bash
 git clone https://github.com/Bhuwan-007/Pokemon_Game.git
