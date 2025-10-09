@@ -35,7 +35,7 @@ jobs:
           node scripts/update-pokedex.js ${{ github.event.pull_request.number }}
         continue-on-error: true
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GH_PAT }}
           GITHUB_REPOSITORY: ${{ github.repository }}
 
       # 🧠 Handle validation result
@@ -71,7 +71,7 @@ jobs:
           commit_message: 'Pokedex Update: Added new entry from PR #${{ github.event.pull_request.number }}'
           files: 'public/data/pokedex_data.json'
 
-      # --- Auto Merge Step ---
+      # --- Auto Merge Step using GH_PAT ---
       - name: Install GitHub CLI
         if: success()
         run: |
@@ -82,6 +82,7 @@ jobs:
         if: success()
         run: |
           echo "Attempting auto-merge for PR #${{ github.event.pull_request.number }}"
-          gh pr merge ${{ github.event.pull_request.number }} --squash --delete-branch --admin
+          gh auth login --with-token <<< "${{ secrets.GH_PAT }}"
+          gh pr merge ${{ github.event.pull_request.number }} --squash --delete-branch
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_PAT: ${{ secrets.GH_PAT }}
