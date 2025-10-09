@@ -1,5 +1,0 @@
-pokemon_name: bulbasaur
-trainer_note: |
-  This entry is specifically for testing the GitHub Action pipeline!
-  If you see this, the automation succeeded.
-submitted_by: tester
