@@ -111,7 +111,7 @@ video#bgVideo {
 
 #home-title {
   position: absolute;
-  top: 70px;
+  top: 230px;
   left: 50%;
   transform: translateX(-50%);
   text-align: center;
