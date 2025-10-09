@@ -111,7 +111,7 @@ video#bgVideo {
 
 #home-title {
   position: absolute;
-  top: 230px;
+  top: 80px;
   left: 50%;
   transform: translateX(-50%);
   text-align: center;
@@ -142,6 +142,24 @@ video#bgVideo {
   margin-top: -20px;
   color: #00d4ff; /* energetic blue */
 }
+
+/* Pokéball resting on the grass */
+#pokeball-bg {
+  position: fixed;
+  bottom: 50px;       /* height from bottom, adjust to match your grass level */
+  right: 90px;        /* spacing from right edge */
+  width: 800px;       /* large size */
+  height: auto;
+  z-index: 1;         /* above video, below text */
+  transform: rotate(-5deg); /* slight tilt for realism */
+  filter: drop-shadow(0 8px 15px rgba(0,0,0,0.4)); /* soft shadow */
+  transition: transform 0.3s ease, filter 0.3s ease;
+}
+
+#pokeball-bg:hover {
+  filter: drop-shadow(0 10px 20px rgba(0,0,0,0.6));
+}
+
 
 
 
