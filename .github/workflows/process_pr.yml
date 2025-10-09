@@ -3,18 +3,16 @@ name: Process New Pokedex Entry
 on:
   pull_request:
     types: [opened, synchronize, reopened]
-    # Restrict trigger to only submission files
     paths:
       - 'submissions/*.yaml'
 
 jobs:
   update-pokedex:
     runs-on: ubuntu-latest
-    
-    # Needs contents: write to update the JSON and pull-requests: write to merge the PR
+
     permissions:
-      contents: write 
-      pull-requests: write # <-- CRITICAL FOR AUTO-MERGE
+      contents: write
+      pull-requests: write
 
     steps:
       - name: Checkout code
@@ -26,39 +24,64 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '20'
-          
-      - name: Install dependencies (from package.json)
+
+      - name: Install dependencies
         run: npm ci
 
-      - name: Run Pokedex Update Script & Validate Name
-        # If the script fails (returns exit code 1 due to bad Pokemon name), the job stops here.
-        run: node scripts/update-pokedex.js ${{ github.event.pull_request.number }}
+      - name: Run Validation & Update Script
+        id: validate
+        run: |
+          echo "Running Pokedex validation..."
+          node scripts/update-pokedex.js ${{ github.event.pull_request.number }}
+        continue-on-error: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          GITHUB_REPOSITORY: ${{ github.repository }} 
-          
+          GITHUB_REPOSITORY: ${{ github.repository }}
+
+      # 🧠 Handle validation result
+      - name: Check validation result
+        id: check
+        run: |
+          if [ "${{ steps.validate.outcome }}" != "success" ]; then
+            echo "❌ Validation failed"
+            echo "result=failed" >> $GITHUB_OUTPUT
+            exit 1
+          else
+            echo "✅ Validation passed"
+            echo "result=success" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Comment if validation fails
+        if: failure()
+        uses: peter-evans/create-or-update-comment@v4
+        with:
+          issue-number: ${{ github.event.pull_request.number }}
+          body: |
+            ❌ **Pokedex Validation Failed**
+            - Please make sure:
+              1. Your YAML file is inside `/submissions/`
+              2. The Pokémon name is spelled correctly and exists on [PokeAPI](https://pokeapi.co/)
+              3. The YAML format matches the required template
+
+      # ✅ Commit only if everything is valid
       - name: Commit JSON Changes
-        # This commits the *updated* JSON file to the source branch (pokelab)
+        if: success()
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: 'Pokedex Update: Added new entry from PR #${{ github.event.pull_request.number }}'
           files: 'public/data/pokedex_data.json'
-          
 
-             # --- NEW AUTO-MERGE STEP ---
-      - name: Ensure GitHub CLI is available
-        run: gh --version
-
-      - name: Authenticate GitHub CLI
-        run: echo "${{ secrets.GITHUB_TOKEN }}" | gh auth login --with-token
+      # --- Auto Merge Step ---
+      - name: Install GitHub CLI
+        if: success()
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gh
 
       - name: Final Auto-Merge
         if: success()
         run: |
-          PR_NUMBER=${{ github.event.pull_request.number }}
-          echo "Merging PR #$PR_NUMBER..."
-          gh pr merge "$PR_NUMBER" --squash --auto --delete-branch
+          echo "Attempting auto-merge for PR #${{ github.event.pull_request.number }}"
+          gh pr merge ${{ github.event.pull_request.number }} --squash --delete-branch --admin
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-
