@@ -33,19 +33,22 @@ Click the **Fork** button on the top-right of the repository page to make a copy
 ```bash
 git clone https://github.com/<your-username>/Pokemon_Game.git
 cd Pokemon_Game
+```
 
 Create a Submission
 Inside the submissions folder, create a new .yaml file for your Pokémon (example: pikachu.yaml).
 
 Use this template:
-
+```bash
 pokemon_name: Pikachu
 trainer_note: "Electric type Pokémon full of energy!"
 submitted_by: YourName
-
+```
+```bash
 git add submissions/pikachu.yaml
 git commit -m "Add Pikachu submission"
 git push origin main
+```
 
 Open a Pull Request
 Navigate to your fork on GitHub and click Compare & Pull Request. Submit the PR. Once it passes validation (checks the Pokémon exists on PokeAPI
@@ -82,8 +85,10 @@ GitHub Guide
 🚀 How to Run Locally
 
 Clone the repository:
+```bash
 git clone https://github.com/Bhuwan-007/Pokemon_Game.git
 cd Pokemon_Game
 Open index.html in your browser to explore the website.
+```
 
 💡 Contributions are welcome! Add your Pokémon, generate new ones, or help improve the generators and arena.
