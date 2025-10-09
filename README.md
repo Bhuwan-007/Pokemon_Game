@@ -81,6 +81,7 @@ Clone the repository:
 ```bash
 git clone https://github.com/Bhuwan-007/Pokemon_Game.git
 cd Pokemon_Game
+```
 Open index.html in your browser to explore the website.
 ```
 
