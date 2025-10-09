@@ -1,0 +1,47 @@
+body {
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+  width: 100vw;
+  background: url('/elements/arena.png') no-repeat center center fixed;
+  background-size: cover;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: 'Orbitron', sans-serif; /* Futuristic racing-style font */
+}
+
+.progress {
+  font-size: 90px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 4px;
+  color: #d25e0c;
+  text-shadow: 
+      0 0 10px #df2f13,
+      0 0 20px #97320b,
+      0 0 30px #d6520a,
+      0 0 40px #ce660b;
+  animation: pulseGlow 2.5s infinite alternate;
+}
+
+/* Subtle glowing pulse */
+@keyframes pulseGlow {
+  0% {
+    text-shadow:
+      0 0 10px #8b5cf6,
+      0 0 20px #7c3aed,
+      0 0 30px #6d28d9;
+    transform: scale(1);
+  }
+  100% {
+    text-shadow:
+      0 0 20px #a78bfa,
+      0 0 40px #c084fc,
+      0 0 60px #d8b4fe;
+    transform: scale(1.05);
+  }
+}
+
+/* Optional: Google Font */
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&display=swap');
