@@ -44,21 +44,17 @@ jobs:
           commit_message: 'Pokedex Update: Added new entry from PR #${{ github.event.pull_request.number }}'
           files: 'public/data/pokedex_data.json'
           
-      # --- NEW AUTO-MERGE STEP ---
-      # This uses a simple CLI command after the commit is pushed
-      - name: Final Auto-Merge
-        # Only run if the commit action above was successful
-        if: success()
-        run: |
-          PR_NUMBER=${{ github.event.pull_request.number }}
-          REPO_NAME=${{ github.repository }}
-          
-          # Use the GitHub CLI to merge the PR cleanly
-          # Note: We use squash merge to keep history clean
-          gh pr merge "$PR_NUMBER" --squash --auto --delete-branch
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          # Install GitHub CLI (gh) tool
+            # --- NEW AUTO-MERGE STEP ---
+      - name: Install GitHub CLI
         uses: cli/cli-action@v1
         with:
           version: 2.37.0
+
+      - name: Final Auto-Merge
+        if: success()
+        run: |
+          PR_NUMBER=${{ github.event.pull_request.number }}
+          gh pr merge "$PR_NUMBER" --squash --auto --delete-branch
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
