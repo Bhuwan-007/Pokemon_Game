@@ -45,17 +45,20 @@ jobs:
           files: 'public/data/pokedex_data.json'
           
 
-       # --- NEW AUTO-MERGE STEP ---
-      - name: Install GitHub CLI
-        uses: cli/cli-action@v1
-        with:
-          version: 2.37.0
+             # --- NEW AUTO-MERGE STEP ---
+      - name: Ensure GitHub CLI is available
+        run: gh --version
+
+      - name: Authenticate GitHub CLI
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | gh auth login --with-token
 
       - name: Final Auto-Merge
         if: success()
         run: |
           PR_NUMBER=${{ github.event.pull_request.number }}
+          echo "Merging PR #$PR_NUMBER..."
           gh pr merge "$PR_NUMBER" --squash --auto --delete-branch
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
 
