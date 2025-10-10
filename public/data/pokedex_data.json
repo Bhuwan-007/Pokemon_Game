@@ -30,5 +30,13 @@
     "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/7.gif",
     "submitted_by": "tester-3",
     "timestamp": "2025-10-10T04:49:10.781Z"
+  },
+  {
+    "id": 130,
+    "name": "Gyarados",
+    "note": "It fires hyper beams in all directions, burning the surrounding area to ash. There are some regions where it’s called the deity of destruction.",
+    "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/130.gif",
+    "submitted_by": "Piyushi",
+    "timestamp": "2025-10-10T06:33:28.812Z"
   }
 ]
