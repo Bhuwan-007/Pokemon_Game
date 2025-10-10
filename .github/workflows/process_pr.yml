@@ -35,12 +35,28 @@ jobs:
       # 4️⃣ Run validation & update script
       - name: Run Validation & Update Script
         id: validate
-        run: node scripts/update-pokedex.js ${{ github.event.pull_request.number }}
+        run: |
+          echo "Running Pokedex validation..."
+          node scripts/update-pokedex.js ${{ github.event.pull_request.number }}
+        continue-on-error: true
         env:
           GITHUB_TOKEN: ${{ secrets.GH_PAT }}
           GITHUB_REPOSITORY: ${{ github.repository }}
 
-      # 5️⃣ Comment if validation fails
+      # 5️⃣ Check validation result
+      - name: Check validation result
+        id: check
+        run: |
+          if [ "${{ steps.validate.outcome }}" != "success" ]; then
+            echo "❌ Validation failed"
+            echo "result=failed" >> $GITHUB_OUTPUT
+            exit 1
+          else
+            echo "✅ Validation passed"
+            echo "result=success" >> $GITHUB_OUTPUT
+          fi
+
+      # 6️⃣ Comment if validation fails
       - name: Comment if validation fails
         if: failure()
         uses: peter-evans/create-or-update-comment@v4
@@ -52,7 +68,7 @@ jobs:
             - Pokémon name must exist on [PokeAPI](https://pokeapi.co/)
             - YAML format matches the required template
 
-      # 6️⃣ Commit JSON changes if validation passed
+      # 7️⃣ Commit JSON changes if validation passed
       - name: Commit JSON Changes
         if: success()
         uses: stefanzweifel/git-auto-commit-action@v5
@@ -63,14 +79,14 @@ jobs:
           commit_user_name: 'GitHub Actions Bot'
           commit_user_email: 'actions@github.com'
 
-      # 7️⃣ Install GitHub CLI for auto-merge
+      # 8️⃣ Install GitHub CLI for auto-merge
       - name: Install GitHub CLI
         if: success()
         run: |
           sudo apt-get update
           sudo apt-get install -y gh
 
-      # 8️⃣ Auto-merge PR
+      # 9️⃣ Auto-merge PR using classic PAT
       - name: Auto Merge PR
         if: success()
         run: |
@@ -78,9 +94,9 @@ jobs:
           gh pr merge ${{ github.event.pull_request.number }} --squash --delete-branch --admin
         env:
           GH_PAT: ${{ secrets.GH_PAT }}
-          GITHUB_TOKEN: ${{ secrets.GH_PAT }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
 
-      # 9️⃣ Optional debug step if something goes wrong
+      # 🔟 Optional debug step if something goes wrong
       - name: Debug: List all files
         if: failure()
         run: ls -R
