@@ -227,3 +227,35 @@ body {
 .open .left { transform: translateX(-35vw); }
 .open .right { transform: translateX(35vw); }
 .open .screen { width: 70vw; opacity: 1; }
+
+#home-btn {
+    position: fixed; 
+    top: 20px;
+    left: 20px;
+    z-index: 100;
+    
+    padding: 10px 20px;
+    font-family: 'Orbitron', sans-serif; 
+    font-size: 1.1rem;
+    cursor: pointer;
+    text-decoration: none;
+    
+    color: #fff; 
+    background: rgba(10, 10, 30, 0.9); /* Very dark background */
+    border: 1px solid #00aaff; /* Sharp, blue border */
+    border-radius: 4px; /* Less rounded for a sharper look */
+    transition: all 0.2s ease-out; 
+    
+    /* Subtle initial glow */
+    box-shadow: 0 0 5px rgba(0, 170, 255, 0.5); 
+}
+
+#home-btn:hover {
+    color: #00ffff;
+    background: rgba(10, 10, 30, 0.5);
+    border-color: #00ffff; 
+    
+    /* Intense blue-green glow on hover */
+    box-shadow: 0 0 20px #00ffaa, inset 0 0 5px #00ffaa; 
+    transform: scale(1.05); /* Slight lift effect */
+}
