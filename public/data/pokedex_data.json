@@ -24,6 +24,14 @@
     "timestamp": "2025-10-10T04:35:21.208Z"
   },
   {
+    "id": 190,
+    "name": "Aipom",
+    "note": "the design is cool ngl",
+    "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/190.gif",
+    "submitted_by": "Bhuwan",
+    "timestamp": "2025-10-10T11:08:41.937Z"
+  },
+  {
     "id": 384,
     "name": "Rayquaza",
     "note": "This Pokémon is said to live in the ozone layer far above the clouds. It descends to the ground only during times of conflict between Kyogre and Groudon.",
