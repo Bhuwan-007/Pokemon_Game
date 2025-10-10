@@ -77,8 +77,3 @@ jobs:
         env:
           GH_PAT: ${{ secrets.GH_PAT }}
           GITHUB_TOKEN: ${{ secrets.GH_PAT }}
-
-      # 9️⃣ Optional debug step if something goes wrong
-      - name: Debug: List all files
-        if: failure()
-        run: ls -R
