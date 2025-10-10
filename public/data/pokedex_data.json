@@ -32,6 +32,14 @@
     "timestamp": "2025-10-10T10:03:57.068Z"
   },
   {
+    "id": 428,
+    "name": "Lopunny",
+    "note": "Cake is Cake",
+    "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/428.gif",
+    "submitted_by": "Avish",
+    "timestamp": "2025-10-10T10:48:46.703Z"
+  },
+  {
     "id": 491,
     "name": "Darkrai",
     "note": "Folklore has it that on moonless nights, this Pokémon will make people see horrific nightmares.",
