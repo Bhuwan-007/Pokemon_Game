@@ -11,19 +11,53 @@
     <source src="/elements/pokemon_background.mp4" type="video/mp4">
   </video>
 
-  <div class="button-container">
-    <a href="/mooncave" class="github-button">
-      <img src="https://cdn-icons-png.flaticon.com/512/25/25231.png" alt="GitHub Logo">
-      <span class="button-text">Towards Moon Cave</span>
-    </a>
+  <!-- Pokeball Icon to Open/Close Slider -->
+  <div id="pokeball-container">
+    <img id="pokeball-icon" src="/elements/slider.png" alt="Pokeball Menu">
   </div>
 
-  <div class="lab-button-container">
-    <a href="/pokelab" class="lab-button">
-      <img src="/elements/pokelab.png" alt="pokelab-logo">
-      <span class="button-text">Towards PokeLab</span>
+  <!-- Slider Navigation Menu -->
+  <nav id="slider-nav">
+    <a href="/" class="slider-btn">
+      <span class="btn-text">Home</span>
+      <img class="btn-icon" src="/elements/home.png" alt="Home">
     </a>
+    <a href="/mooncave" class="slider-btn">
+      <span class="btn-text">Moon Cave</span>
+      <img class="btn-icon" src="/elements/mooncave-img.png" alt="Moon Cave">
+    </a>
+    <a href="/pokelab" class="slider-btn">
+      <span class="btn-text">PokéLab</span>
+      <img class="btn-icon" src="/elements/pokelab-img.png" alt="PokéLab">
+    </a>
+    <a href="/pokedex" class="slider-btn">
+      <span class="btn-text">Pokédex</span>
+      <img class="btn-icon" src="/elements/pokedex-img.png" alt="Pokédex">
+    </a>
+    <a href="/pokemon-generator" class="slider-btn">
+      <span class="btn-text">Pokémon Generator</span>
+      <img class="btn-icon" src="/elements/pokemon-generator-img.png" alt="Generator">
+    </a>
+    <a href="/pokemon-card" class="slider-btn">
+      <span class="btn-text">Card Generator</span>
+      <img class="btn-icon" src="/elements/card_icon.png" alt="Card Generator">
+    </a>
+    <a href="/arena" class="slider-btn">
+      <span class="btn-text">Poké Arena</span>
+      <img class="btn-icon" src="/elements/arena-img.png" alt="Arena">
+    </a>
+  </nav>
+
+
+  <div id="home-title">
+    <h1>A Pokémon</h1>
+    <h2>Journey</h2>
   </div>
+
+  <!-- Pokéball on the Grass -->
+  <img id="pokeball-bg" src="/elements/pokeball_bg.png" alt="Pokéball on Grass">
+
+
 
   <script src="/javascript/homepage_js.js"></script>
 </body>

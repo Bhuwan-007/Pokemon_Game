@@ -23,6 +23,9 @@ app.get("/pokelab", (req, res) => {
 app.get("/pokedex", (req, res) => {
     res.sendFile(path.join(__dirname, 'pokedex.html'));
 })
+app.get("/arena", (req, res) => {
+    res.sendFile(path.join(__dirname, 'arena.html'));
+})
 
 
 app.listen(3000, () => {
