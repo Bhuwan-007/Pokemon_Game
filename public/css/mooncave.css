@@ -123,7 +123,7 @@ body, html {
   transform: scale(1);
 }
 
-#secretText {
+#secretText, #fireText, #battleText, #victoryText, #infernapeText {
   display: none;
   position: fixed;
   top: 6vh;
@@ -146,7 +146,7 @@ body, html {
 }
 
 /* Fade + subtle pulsing glow for ancient effect */
-#secretText.show {
+#secretText.show, #fireText.show, #battleText.show, #victoryText.show, #infernapeText.show {
   display: block;
   opacity: 1;
   transform: scale(1);
@@ -171,6 +171,50 @@ body, html {
     cursor: pointer;
     z-index: 100;
   }
+  #fire {
+    position: absolute;
+    top: 30%;   
+    right: 31.75%;  
+    width: 85px; 
+    height: 110px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    z-index: 100;
+  }
+  #battle {
+    position: absolute;
+    top: 51%;   
+    right: 29%;  
+    width: 83px; 
+    height: 90px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    z-index: 100;
+  }
+  #victory {
+    position: absolute;
+    top: 31%;   
+    left: 41.5%;  
+    width: 130px; 
+    height: 125px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    z-index: 100;
+  }
+  #infernape {
+    position: absolute;
+    top: 13.5%;   
+    right: 30%;  
+    width: 80px; 
+    height: 97px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    z-index: 100;
+  }
 
   /*
   #glitter {
@@ -178,6 +222,47 @@ body, html {
     border: 1px solid white;
   }
   */
+
+  /* --- New Home Button Styles --- */
+#home-btn {
+    /* Position the button relative to the viewport/window */
+    position: fixed; 
+    /* Using fixed keeps it in place even if the user scrolls, which is ideal for navigation */
+    top: 20px;
+    left: 110px;
+    z-index: 100; /* Ensure it's above all other content layers */
+
+    /* Basic button appearance (Cave Stone Theme) */
+    padding: 10px 20px;
+    font-family: 'MedievalSharp', cursive; /* Match the theme font */
+    font-size: 1.1rem;
+    cursor: pointer;
+    text-decoration: none; /* For the <a> tag */
+    
+    color: #f0f0f0; 
+    background: rgba(30, 30, 40, 0.8); /* Dark, semi-transparent background */
+    border: 2px solid #5d5d7e; /* Subtle stone border */
+    border-radius: 8px; 
+    
+    /* Smooth transition for hover effects */
+    transition: all 0.3s ease; 
+}
+
+#home-btn:hover {
+    color: #ffffff;
+    background: rgba(45, 45, 60, 0.9);
+    border-color: #a0a0ff; 
+    
+    /* Subtle glow on hover */
+    box-shadow: 0 0 15px rgba(123, 41, 195, 0.6); 
+}
+
+/* * Optional: You may want to also add 'border: none;' to your main buttons 
+* if you are still seeing an unwanted line, as discussed previously:
+* #glitter, #fire, #battle, #victory, #infernape {
+    border: none;
+}
+*/
   
 
 

@@ -144,4 +144,58 @@ button.addEventListener('click', () => {
     window.location.href = 'https://youtu.be/xvFZjo5PgG0?si=6sUKyZiYVz4if9XK';
   }, 1500);
 });
+const fire = document.getElementById('fire');
+const fire_text = document.getElementById('fireText');
+
+fire.addEventListener('click', () => {
+  fire_text.classList.add('show');
+  setTimeout(() => {
+    fire_text.classList.remove('show');
+  }, 2500);
+
+  setTimeout(() => {
+    window.location.href = 'https://youtu.be/UhzFxtPgjNU?si=5zoT1PO_CBZOEbr6';
+  }, 2000);
+});
+
+const battle = document.getElementById('battle');
+const battle_text = document.getElementById('battleText');
+
+battle.addEventListener('click', () => {
+  battle_text.classList.add('show');
+  setTimeout(() => {
+    battle_text.classList.remove('show');
+  }, 2500);
+
+  setTimeout(() => {
+    window.location.href = 'https://youtu.be/O-o7knB5bYk?si=zSoHMeKTM2p7smbR';
+  }, 2000);
+});
+
+const victory = document.getElementById('victory');
+const victory_text = document.getElementById('victoryText');
+victory.addEventListener('click', () => {
+  victory_text.classList.add('show');
+  setTimeout(() => {
+    victory_text.classList.remove('show');
+  }, 2500);
+
+  setTimeout(() => {
+    window.location.href = 'https://youtu.be/rwTy9WYTq2Q?si=_RLoFVCwILlnmOzW';
+  }, 2000);
+});
+
+const infernape = document.getElementById('infernape');
+const infernape_text = document.getElementById('infernapeText');
+infernape.addEventListener('click', () => {
+  infernape_text.classList.add('show');
+  setTimeout(() => {
+    infernape_text.classList.remove('show');
+  }, 2500);
+
+  setTimeout(() => {
+    window.location.href = 'https://youtu.be/kwr6rZ9jEho?si=f0WB7cqmHqmlBD7w';
+  }, 2000); 
+});
+
 
