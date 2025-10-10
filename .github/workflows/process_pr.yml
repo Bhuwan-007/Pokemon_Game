@@ -65,8 +65,4 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GH_PAT }} # Use the powerful PAT
         # Removed the problematic 'merge_method' and 'allow_unauthorized_authors' inputs
-        # We rely on the branch protection rule requiring squash merge.
-        with:
-          merge_method: squash
-          commit_message: title+body
-          delete_branch: true
+        
