@@ -38,5 +38,13 @@
     "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/491.gif",
     "submitted_by": "MDSingh",
     "timestamp": "2025-10-10T05:34:25.135Z"
+  },
+  {
+    "id": 491,
+    "name": "Darkrai",
+    "note": "Folklore has it that on moonless nights, this Pokémon will make people see horrific nightmares.",
+    "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/491.gif",
+    "submitted_by": "MDSingh",
+    "timestamp": "2025-10-10T09:36:15.693Z"
   }
 ]
