@@ -14,5 +14,13 @@
     "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/4.gif",
     "submitted_by": "tester-2",
     "timestamp": "2025-10-09T09:08:28.212Z"
+  },
+  {
+    "id": 7,
+    "name": "squirtle",
+    "note": "water emitting turtle",
+    "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/7.gif",
+    "submitted_by": "tester-3",
+    "timestamp": "2025-10-10T04:35:21.208Z"
   }
 ]
