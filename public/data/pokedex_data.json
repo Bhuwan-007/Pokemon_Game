@@ -24,6 +24,14 @@
     "timestamp": "2025-10-10T04:35:21.208Z"
   },
   {
+    "id": 149,
+    "name": "Dragonite",
+    "note": "This Pokémon is capable of circling the globe in just 16 hours. It is a kindhearted Pokémon that leads lost ships in a storm to the safety of land.",
+    "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/149.gif",
+    "submitted_by": "Bhavya",
+    "timestamp": "2025-10-10T17:58:53.424Z"
+  },
+  {
     "id": 190,
     "name": "Aipom",
     "note": "the design is cool ngl",
