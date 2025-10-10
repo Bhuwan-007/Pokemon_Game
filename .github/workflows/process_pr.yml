@@ -58,7 +58,7 @@ jobs:
       # 6️⃣ Close the Pull Request (Final Step)
       # This step runs because the data is already on the main branch (from step 5).
       # It resolves the race condition by simply closing the PR instead of trying to merge it.
-      - name: Close PR and Delete Branch
+      - name: Close PR
         if: success()
         uses: actions/github-script@v7
         with:
@@ -70,11 +70,4 @@ jobs:
               repo: context.repo.repo,
               pull_number: pr.number,
               state: 'closed' // Close the PR
-            });
-            
-            // Delete the source branch for cleanliness
-            await github.rest.git.deleteRef({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              ref: `heads/${pr.head.ref}`,
             });
