@@ -1,23 +1,20 @@
 name: Process New Pokedex Entry
 
 on:
-  # Use pull_request_target to allow running with write permissions on external forks
+  # CRITICAL FIX: Removed the restrictive 'paths' filter. 
+  # The job now runs for every PR, and the script handles the file filtering internally.
   pull_request_target:
     types: [opened, synchronize, reopened]
-    paths:
-      - 'submissions/*.yaml'
 
 jobs:
   update-pokedex:
-    # Ensure this job runs with the proper context and permissions
     runs-on: ubuntu-latest
     permissions:
       contents: write 
-      pull-requests: write # Critical for the automerge step
+      pull-requests: write 
 
     steps:
       # 1️⃣ Checkout Base Branch (main)
-      # We checkout the target branch (main) first to ensure we have the latest JSON file to read from.
       - name: Checkout Base Branch
         uses: actions/checkout@v4
         with:
@@ -25,13 +22,12 @@ jobs:
           fetch-depth: 0
 
       # 2️⃣ Fetch the Contributor's Changes (The Submission File)
-      # This step fetches the YAML file contents from the contributor's PR
       - name: Fetch PR Changes
         uses: actions/checkout@v4
         with:
           ref: ${{ github.event.pull_request.head.sha }}
           path: ./.tmp-pr-changes # Download PR changes into a temporary folder
-          token: ${{ secrets.GITHUB_TOKEN }} # Use default token for simple read access
+          token: ${{ secrets.GITHUB_TOKEN }}
           
       # 3️⃣ Setup Node.js
       - name: Set up Node.js
@@ -44,18 +40,15 @@ jobs:
         run: npm ci
 
       # 5️⃣ Run validation & update script
-      # This runs the script using the YAML found in the temporary folder.
-      # If the script fails (bad Pokemon name), the job stops here.
+      # The script now uses the path ./.tmp-pr-changes/submissions/ to find the file.
+      # If no YAML files are found, the script will exit gracefully without error.
       - name: Run Validation & Update Script
         run: node scripts/update-pokedex.js ${{ github.event.pull_request.number }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GITHUB_REPOSITORY: ${{ github.repository }} 
-          # Pass the path to the YAML file
-          YAML_FILE_PATH: ./.tmp-pr-changes/submissions/
           
       # 6️⃣ Commit JSON Changes to the main branch
-      # Uses the GH_PAT to commit the updated JSON file directly to the main branch.
       - name: Commit JSON Changes to Main
         if: success()
         uses: stefanzweifel/git-auto-commit-action@v5
@@ -68,7 +61,6 @@ jobs:
           token: ${{ secrets.GH_PAT }} # Use the powerful PAT
 
       # 7️⃣ Auto-merge PR
-      # This step closes the PR since the changes are already on the main branch.
       - name: Auto-Merge and Close PR
         if: success()
         uses: pascalgn/automerge-action@v0.16.0
