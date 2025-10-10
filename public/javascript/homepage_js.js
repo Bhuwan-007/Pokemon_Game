@@ -1,16 +1,14 @@
-// Pokémon sprites floating
-const pokemonSprites = [
-  'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/25.png', // Pikachu
-  'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1.png',  // Bulbasaur
-  'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/4.png',  // Charmander
-  'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/7.png',  // Squirtle
-  'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/39.png', // Jigglypuff
-];
-
-const numberOfSprites = 10;
-
 document.addEventListener("DOMContentLoaded", () => {
-  // Generate floating sprites
+  // Floating Pokémon sprites
+  const pokemonSprites = [
+    'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/25.png', // Pikachu
+    'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1.png',  // Bulbasaur
+    'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/4.png',  // Charmander
+    'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/7.png',  // Squirtle
+    'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/39.png', // Jigglypuff
+  ];
+
+  const numberOfSprites = 10;
   for (let i = 0; i < numberOfSprites; i++) {
     const sprite = document.createElement("div");
     sprite.classList.add("sprite");
@@ -31,21 +29,15 @@ document.addEventListener("DOMContentLoaded", () => {
     document.body.appendChild(sprite);
   }
 
-  // Smooth portal transition
-  const button = document.querySelector(".github-button");
-  if (button) {
-    button.addEventListener("click", (e) => {
-      e.preventDefault();
+  // Pokeball Slider
+  const pokeballIcon = document.getElementById('pokeball-icon');
+  const sliderNav = document.getElementById('slider-nav');
 
-      const portal = document.createElement("div");
-      portal.classList.add("portal-effect");
-      document.body.appendChild(portal);
-
-      document.body.classList.add("fade-out");
-
-      portal.addEventListener("animationend", () => {
-        window.location.href = "/mooncave"; // your next route
-      });
-    });
-  }
+  pokeballIcon.addEventListener('click', () => {
+    if (sliderNav.style.left === '0px') {
+      sliderNav.style.left = '-325px'; // hide
+    } else {
+      sliderNav.style.left = '0px'; // show
+    }
+  });
 });
