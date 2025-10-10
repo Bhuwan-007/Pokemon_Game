@@ -32,6 +32,14 @@
     "timestamp": "2025-10-10T11:08:41.937Z"
   },
   {
+    "id": 257,
+    "name": "Blaziken",
+    "note": "its fire and fighting type is so cool",
+    "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/257.gif",
+    "submitted_by": "Bhuwan",
+    "timestamp": "2025-10-10T11:48:25.088Z"
+  },
+  {
     "id": 384,
     "name": "Rayquaza",
     "note": "This Pokémon is said to live in the ozone layer far above the clouds. It descends to the ground only during times of conflict between Kyogre and Groudon.",
