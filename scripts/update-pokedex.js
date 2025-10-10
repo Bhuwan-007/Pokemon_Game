@@ -24,7 +24,7 @@ async function getChangedFiles(prNumber, repo) {
   const response = await fetch(url, {
     headers: {
       'Authorization': `token ${process.env.GITHUB_TOKEN}`,
-      'Accept': 'application/vnd.github.v3+json',
+      'Accept': 'application/vnd.github.com+json', // Corrected Accept header
       'User-Agent': 'GitHub-Pokedex-Bot' 
     }
   });
@@ -52,7 +52,7 @@ async function processEntry(filePath) {
 
   if (!apiResponse.ok) {
     console.error(`\n--- POKÉAPI VALIDATION FAILED ---`);
-    console.error(`Could not find Pokémon "${entry.pokemon_name}".`);
+    console.error(`Error: Could not find Pokémon "${entry.pokemon_name}".`);
     console.error(`Check the spelling in your YAML file and resubmit.`);
     console.error(`----------------------------------\n`);
     process.exit(1);
@@ -83,62 +83,69 @@ async function processEntry(filePath) {
   };
 }
 
+// === START OF CORRECTED MAIN FUNCTION ===
 async function main() {
-  const prNumber = process.argv[2];
-  const repo = process.env.GITHUB_REPOSITORY; 
+    const prNumber = process.argv[2];
+    const repo = process.env.GITHUB_REPOSITORY; 
 
-  if (!prNumber || !repo) {
-    console.error("Missing PR number or repository environment variable.");
-    process.exit(1);
-  }
-
-  try {
-    const changedYamlFiles = await getChangedFiles(prNumber, repo);
-
-    if (changedYamlFiles.length === 0) {
-      console.log("No new YAML files found to process. Exiting.");
-      return;
+    if (!prNumber || !repo) {
+        console.error("Missing PR number or repository environment variable.");
+        process.exit(1);
     }
 
-    // Load existing Pokedex data
-    let pokedexData = [];
     try {
-      const dataString = await fs.readFile(DATA_FILE, 'utf8');
-      pokedexData = JSON.parse(dataString);
+        const changedYamlFiles = await getChangedFiles(prNumber, repo);
+
+        if (changedYamlFiles.length === 0) {
+            console.log("No new YAML files found to process. Exiting.");
+            return;
+        }
+
+        let pokedexData = [];
+        try {
+            const dataString = await fs.readFile(DATA_FILE, 'utf8');
+            pokedexData = JSON.parse(dataString);
+        } catch (error) {
+            console.warn("Pokedex data file not found or empty. Starting fresh.");
+        }
+
+        let newEntriesAdded = false;
+
+        for (const filePath of changedYamlFiles) {
+            // ⭐ CRITICAL FIX: The file path is relative to the root, but the file is in the temp folder.
+            // We join the temp folder name (.tmp-pr-changes) with the file path (e.g., submissions/bulbasaur.yaml)
+            const absolutePath = path.join('./.tmp-pr-changes', filePath); 
+            
+            const newEntry = await processEntry(absolutePath);
+
+            if (newEntry) {
+                // ... (rest of the logic for adding entries)
+                const isDuplicate = pokedexData.some(entry => entry.id === newEntry.id);
+                if (!isDuplicate) {
+                    pokedexData.push(newEntry);
+                    newEntriesAdded = true;
+                    console.log(`Successfully added entry for ${newEntry.name} (ID: ${newEntry.id}).`);
+                } else {
+                    console.log(`${newEntry.name} (ID: ${newEntry.id}) already exists. Skipping duplicate entry.`);
+                }
+            }
+        }
+
+        if (newEntriesAdded) {
+            pokedexData.sort((a, b) => a.id - b.id);
+            await fs.writeFile(DATA_FILE, JSON.stringify(pokedexData, null, 2));
+            console.log(`\n--- JSON DATABASE UPDATED SUCCESSFULLY ---`);
+            console.log(`Pushed changes will trigger the auto-merge.`);
+        } else {
+            console.log("No unique new entries found. JSON file remains unchanged.");
+        }
+
     } catch (error) {
-      console.warn("Pokedex data file not found or empty. Starting fresh.");
+        if (!error.message.includes('VALIDATION FAILED')) {
+            console.error("A critical error occurred:", error.message);
+            process.exit(1); 
+        }
     }
-
-    let newEntriesAdded = false;
-
-    for (const filePath of changedYamlFiles) {
-      const absolutePath = path.join(__dirname, '..', filePath);
-      const newEntry = await processEntry(absolutePath);
-
-      if (newEntry) {
-        // ✅ Add every entry, even if Pokémon already exists
-        pokedexData.push(newEntry);
-        newEntriesAdded = true;
-        console.log(`Added entry for ${newEntry.name} (ID: ${newEntry.id}).`);
-      }
-    }
-
-    // Write changes only if new entries were added
-    if (newEntriesAdded) {
-      pokedexData.sort((a, b) => a.id - b.id);
-      await fs.writeFile(DATA_FILE, JSON.stringify(pokedexData, null, 2));
-      console.log(`\n--- JSON DATABASE UPDATED SUCCESSFULLY ---`);
-      console.log(`Pushed changes will trigger the auto-merge.`);
-    } else {
-      console.log("No new entries found. JSON file remains unchanged.");
-    }
-
-  } catch (error) {
-    if (!error.message.includes('VALIDATION FAILED')) {
-      console.error("A critical error occurred:", error.message);
-      process.exit(1); 
-    }
-  }
 }
 
 main();
