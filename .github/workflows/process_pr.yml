@@ -51,6 +51,7 @@ jobs:
             - Ensure your YAML file is inside `/submissions/`
             - Pokémon name must exist on [PokeAPI](https://pokeapi.co/)
             - YAML format matches the required template
+
       # 6️⃣ Commit JSON changes if validation passed
       - name: Commit JSON Changes
         if: success()
@@ -68,7 +69,13 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y gh
-      # 8️⃣ Auto-merge PR
+
+      # 8️⃣ Unset GITHUB_TOKEN before using gh CLI
+      - name: Unset GITHUB_TOKEN
+        if: success()
+        run: unset GITHUB_TOKEN
+
+      # 9️⃣ Auto-merge PR
       - name: Auto Merge PR
         if: success()
         run: |
@@ -76,4 +83,3 @@ jobs:
           gh pr merge ${{ github.event.pull_request.number }} --squash --delete-branch --admin
         env:
           GH_PAT: ${{ secrets.GH_PAT }}
-          GITHUB_TOKEN: ${{ secrets.GH_PAT }}
