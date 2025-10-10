@@ -168,7 +168,7 @@ body {
 }
 
 .search-box {
-  width: 120px;
+  width: 180px;
   padding: 5px;
   border-radius: 10px;
   border: 2px solid #00ffff;
@@ -190,7 +190,6 @@ body {
   position: absolute;
   top: 50%;
   left: 10px;
-  transform: translateY(-50%);
   z-index: 5;
 }
 

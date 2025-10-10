@@ -144,6 +144,7 @@ closeBtn.addEventListener("click", () => {
 });
 
 // --- Toggle Search ---
+// --- Toggle Search ---
 searchBtn.addEventListener("click", () => {
     searchOpen = !searchOpen;
     if (searchOpen) {
@@ -152,7 +153,12 @@ searchBtn.addEventListener("click", () => {
         detailView.style.display = "none";
     } else {
         searchContainer.style.display = "none";
+        
+        // --- ADDED: Reset to full Pokedex list when search is closed ---
+        renderSprites(pokedexData); 
+        
         pokemonDisplay.style.display = "flex";
+        // --- END ADDED ---
     }
 });
 
