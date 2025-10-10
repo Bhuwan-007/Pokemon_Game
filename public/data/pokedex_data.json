@@ -24,22 +24,6 @@
     "timestamp": "2025-10-10T04:35:21.208Z"
   },
   {
-    "id": 7,
-    "name": "squirtle",
-    "note": "water emitting turtle",
-    "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/7.gif",
-    "submitted_by": "tester-3",
-    "timestamp": "2025-10-10T04:49:10.781Z"
-  },
-  {
-    "id": 491,
-    "name": "Darkrai",
-    "note": "Folklore has it that on moonless nights, this Pokémon will make people see horrific nightmares.",
-    "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/491.gif",
-    "submitted_by": "MDSingh",
-    "timestamp": "2025-10-10T05:34:25.135Z"
-  },
-  {
     "id": 491,
     "name": "Darkrai",
     "note": "Folklore has it that on moonless nights, this Pokémon will make people see horrific nightmares.",
