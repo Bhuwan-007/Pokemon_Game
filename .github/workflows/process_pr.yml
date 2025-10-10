@@ -58,11 +58,11 @@ jobs:
           commit_user_email: 'actions@github.com'
           token: ${{ secrets.GH_PAT }} # Use the powerful PAT
 
-      # 7️⃣ Auto-merge PR (The Fix is HERE)
+      # 7️⃣ Auto-merge PR (Final Token Fix)
       - name: Auto-Merge and Close PR
         if: success()
         uses: pascalgn/automerge-action@v0.16.0
-        env:
-          GITHUB_TOKEN: ${{ secrets.GH_PAT }} # Use the powerful PAT
-        # Removed the problematic 'merge_method' and 'allow_unauthorized_authors' inputs
-        
+        with:
+          # CRITICAL FIX: Use the 'github-token' input instead of 'env:' for reliable authentication
+          github-token: ${{ secrets.GH_PAT }} 
+        # The 'env:' block is now removed from this step.
