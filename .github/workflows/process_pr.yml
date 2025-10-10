@@ -1,6 +1,5 @@
 name: Process New Pokedex Entry
 
-# Use pull_request_target to allow PRs from forks to access secrets
 on:
   pull_request_target:
     types: [opened, synchronize, reopened]
@@ -10,23 +9,24 @@ on:
 jobs:
   update-pokedex:
     runs-on: ubuntu-latest
-
     permissions:
       contents: write
       pull-requests: write
 
     steps:
-      # 1️⃣ Checkout the repo
-      - name: Checkout code
+      # 1️⃣ Checkout PR branch (even from forks)
+      - name: Checkout PR branch
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
+          ref: ${{ github.event.pull_request.head.ref }}
+          repository: ${{ github.event.pull_request.head.repo.full_name }}
 
       # 2️⃣ Setup Node.js
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: 20
 
       # 3️⃣ Install dependencies
       - name: Install dependencies
@@ -35,29 +35,12 @@ jobs:
       # 4️⃣ Run validation & update script
       - name: Run Validation & Update Script
         id: validate
-        run: |
-          echo "Running Pokedex validation..."
-          node scripts/update-pokedex.js ${{ github.event.pull_request.number }}
-        continue-on-error: true
+        run: node scripts/update-pokedex.js ${{ github.event.pull_request.number }}
         env:
-          # Use your GH_PAT here so scripts can write to main repo
           GITHUB_TOKEN: ${{ secrets.GH_PAT }}
           GITHUB_REPOSITORY: ${{ github.repository }}
 
-      # 5️⃣ Check validation result
-      - name: Check validation result
-        id: check
-        run: |
-          if [ "${{ steps.validate.outcome }}" != "success" ]; then
-            echo "❌ Validation failed"
-            echo "result=failed" >> $GITHUB_OUTPUT
-            exit 1
-          else
-            echo "✅ Validation passed"
-            echo "result=success" >> $GITHUB_OUTPUT
-          fi
-
-      # 6️⃣ Comment if validation fails
+      # 5️⃣ Comment if validation fails
       - name: Comment if validation fails
         if: failure()
         uses: peter-evans/create-or-update-comment@v4
@@ -65,30 +48,29 @@ jobs:
           issue-number: ${{ github.event.pull_request.number }}
           body: |
             ❌ **Pokedex Validation Failed**
-            - Please make sure:
-              1. Your YAML file is inside `/submissions/`
-              2. The Pokémon name is spelled correctly and exists on [PokeAPI](https://pokeapi.co/)
-              3. The YAML format matches the required template
+            - Ensure your YAML file is inside `/submissions/`
+            - Pokémon name must exist on [PokeAPI](https://pokeapi.co/)
+            - YAML format matches the required template
 
-      # 7️⃣ Commit JSON changes (only if validation passes)
+      # 6️⃣ Commit JSON changes if validation passed
       - name: Commit JSON Changes
         if: success()
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: 'Pokedex Update: Added new entry from PR #${{ github.event.pull_request.number }}'
-          files: 'public/data/pokedex_data.json'
+          files: public/data/pokedex_data.json
+          branch: main
           commit_user_name: 'GitHub Actions Bot'
           commit_user_email: 'actions@github.com'
-          branch: main
 
-      # 8️⃣ Install GitHub CLI for auto-merge
+      # 7️⃣ Install GitHub CLI for auto-merge
       - name: Install GitHub CLI
         if: success()
         run: |
           sudo apt-get update
           sudo apt-get install -y gh
 
-      # 9️⃣ Auto-merge PR using GH_PAT
+      # 8️⃣ Auto-merge PR
       - name: Auto Merge PR
         if: success()
         run: |
@@ -96,4 +78,9 @@ jobs:
           gh pr merge ${{ github.event.pull_request.number }} --squash --delete-branch --admin
         env:
           GH_PAT: ${{ secrets.GH_PAT }}
-          GITHUB_REPOSITORY: ${{ github.repository }}
+          GITHUB_TOKEN: ${{ secrets.GH_PAT }}
+
+      # 9️⃣ Optional debug step if something goes wrong
+      - name: Debug: List all files
+        if: failure()
+        run: ls -R
