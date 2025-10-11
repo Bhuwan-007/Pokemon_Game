@@ -16,6 +16,14 @@
     "timestamp": "2025-10-09T09:08:28.212Z"
   },
   {
+    "id": 6,
+    "name": "Charizard",
+    "note": "Charmainder",
+    "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/6.gif",
+    "submitted_by": "Moksh",
+    "timestamp": "2025-10-11T16:25:39.049Z"
+  },
+  {
     "id": 7,
     "name": "squirtle",
     "note": "water emitting turtle",
