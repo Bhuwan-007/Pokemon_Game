@@ -224,6 +224,47 @@ searchGoBtn.addEventListener("click", () => {
     }
 });
 
+searchNameInput.addEventListener("keydown", (event) => {
+    // Check if the pressed key is the 'Enter' key
+    if (event.key === 'Enter') {
+        // Prevent the default form submission behavior (if the input was in a form)
+        event.preventDefault(); 
+        
+        // Programmatically trigger the click event on the 'Go' button
+        // This runs the existing search logic without code duplication.
+        searchGoBtn.click();
+    }
+});
+
+document.addEventListener('keydown', (event) => {
+    // Check if the pressed key is the 'Escape' key
+    if (event.key === 'Escape') {
+        // Check if the detail view is currently visible
+        if (detailView.style.display === "flex") {
+            // Check if the temporary message is visible (where selectedSprite is null)
+            // If selectedSprite is null, it means we're in a temporary message mode, 
+            // so we use the safe function to hide it.
+            if (selectedSprite === null) {
+                hideTemporaryMessage();
+            } else {
+                // If a Pokémon detail is visible (selectedSprite is NOT null), 
+                // manually execute the close logic.
+                detailView.style.display = "none";
+                pokemonDisplay.style.display = "flex";
+                selectedSprite = null;
+            }
+        }
+        
+        // You might also want to close the Search container here if it's open
+        if (searchOpen) {
+            searchContainer.style.display = "none";
+            renderSprites(pokedexData); // Reset to full list
+            pokemonDisplay.style.display = "flex";
+            searchOpen = false;
+        }
+    }
+});
+
 // --- Detail View Close Listener ---
 detailView.addEventListener("click", (e) => {
     if (e.target.classList.contains('detail-view') || e.target.classList.contains('screen-content')) {
