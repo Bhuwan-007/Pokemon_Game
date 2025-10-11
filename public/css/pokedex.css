@@ -79,22 +79,28 @@ body {
 .right::after { left: -100px; }
 
 /* === Glowing Screen === */
+/* === Glowing Screen === */
 .screen {
-  position: absolute;   /* important for alignment */
-  width: 0;             /* expands when open */
+  position: absolute;
+  width: 0;
   height: 80%;
   border-radius: 18px;
+  /* Keep the background and box-shadow properties as they are */
   background: linear-gradient(180deg, rgba(0,255,255,0.25), rgba(0,255,255,0.05));
   box-shadow: 0 0 50px #00ffffaa;
   opacity: 0;
   transition: all 1s ease-in-out;
   z-index: 1;
-  overflow: hidden;
+  /* CHANGE: Enable vertical scrolling when content exceeds screen height */
+  overflow-y: auto; 
+  /* CHANGE: Hide horizontal scrollbar if it appears (optional, since content is mostly vertical) */
+  overflow-x: hidden; 
+  /* CHANGE: Stretch content to full width for better scrolling, and remove the fixed start alignment */
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  align-items: stretch; /* CHANGED from flex-start */
   justify-content: flex-start;
-  padding: 20px;       /* safe padding */
+  padding: 20px;
   box-sizing: border-box;
 }
 
@@ -116,9 +122,11 @@ body {
 .pokemon-display {
   display: flex;
   flex-direction: row;
+  /* Allow items to wrap onto multiple lines */
+  flex-wrap: wrap; 
   gap: 10px;
   margin-top: 10px;
-  overflow-x: hidden;  /* remove scroll bar */
+  /* REMOVED: overflow-x: hidden; */
   z-index: 2;
 }
 
@@ -258,4 +266,57 @@ body {
     /* Intense blue-green glow on hover */
     box-shadow: 0 0 20px #00ffaa, inset 0 0 5px #00ffaa; 
     transform: scale(1.05); /* Slight lift effect */
+}
+
+/* Custom Scrollbar for the .screen (for a blue-green effect) */
+
+/* WebKit (Chrome, Safari, newer Edge) */
+.screen::-webkit-scrollbar {
+    width: 8px;
+    background: rgba(0, 0, 0, 0.2); /* Transparent dark background for the track */
+}
+
+.screen::-webkit-scrollbar-thumb {
+    /* Glowing blue/cyan color for the thumb */
+    background: #00ffff; 
+    border-radius: 4px;
+    border: 1px solid #00aaaa;
+    /* Subtle inner shadow for depth */
+    box-shadow: inset 0 0 5px rgba(0, 255, 255, 0.5); 
+}
+
+/* Mozilla (Firefox) - Uses different properties */
+.screen {
+    scrollbar-color: #00ffff rgba(0, 0, 0, 0.2); /* thumb track */
+    scrollbar-width: thin; /* auto | thin | none */
+}
+
+/* === Persistent Footer Message (pokedex.html) === */
+#pokedex-footer-message {
+    position: fixed; /* Keep it anchored to the viewport */
+    bottom: 10px;    /* 10px from the bottom */
+    width: 100%;     /* Span the full width */
+    text-align: center; /* Center the text */
+    
+    /* Style for the 'techy' look */
+    color: #00ffff; /* Glowing cyan text */
+    font-family: 'Orbitron', sans-serif;
+    font-size: 0.9rem;
+    padding: 5px 0;
+    
+    /* Optional: Subtle background glow */
+    text-shadow: 0 0 5px rgba(0, 255, 255, 0.5);
+    z-index: 50; /* Ensure it's above the body background */
+}
+
+#pokedex-footer-message a {
+    color: #ff00ff; /* Neon magenta for the link */
+    text-decoration: none;
+    border-bottom: 1px dashed #ff00ff; /* Dashed underline for tech look */
+    transition: color 0.2s;
+}
+
+#pokedex-footer-message a:hover {
+    color: #fff; /* White on hover */
+    border-bottom-color: #fff;
 }
