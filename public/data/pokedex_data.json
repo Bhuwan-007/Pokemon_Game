@@ -14,5 +14,77 @@
     "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/4.gif",
     "submitted_by": "tester-2",
     "timestamp": "2025-10-09T09:08:28.212Z"
+  },
+  {
+    "id": 7,
+    "name": "squirtle",
+    "note": "water emitting turtle",
+    "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/7.gif",
+    "submitted_by": "tester-3",
+    "timestamp": "2025-10-10T04:35:21.208Z"
+  },
+  {
+    "id": 149,
+    "name": "Dragonite",
+    "note": "This Pokémon is capable of circling the globe in just 16 hours. It is a kindhearted Pokémon that leads lost ships in a storm to the safety of land.",
+    "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/149.gif",
+    "submitted_by": "Bhavya",
+    "timestamp": "2025-10-10T17:58:53.424Z"
+  },
+  {
+    "id": 190,
+    "name": "Aipom",
+    "note": "the design is cool ngl",
+    "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/190.gif",
+    "submitted_by": "Bhuwan",
+    "timestamp": "2025-10-10T11:08:41.937Z"
+  },
+  {
+    "id": 257,
+    "name": "Blaziken",
+    "note": "its fire and fighting type is so cool",
+    "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/257.gif",
+    "submitted_by": "Bhuwan",
+    "timestamp": "2025-10-10T11:48:25.088Z"
+  },
+  {
+    "id": 384,
+    "name": "Rayquaza",
+    "note": "This Pokémon is said to live in the ozone layer far above the clouds. It descends to the ground only during times of conflict between Kyogre and Groudon.",
+    "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/384.gif",
+    "submitted_by": "Bhavya",
+    "timestamp": "2025-10-10T10:03:57.068Z"
+  },
+  {
+    "id": 428,
+    "name": "Lopunny",
+    "note": "Cake is Cake",
+    "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/428.gif",
+    "submitted_by": "Avish",
+    "timestamp": "2025-10-10T10:48:46.703Z"
+  },
+  {
+    "id": 491,
+    "name": "Darkrai",
+    "note": "Folklore has it that on moonless nights, this Pokémon will make people see horrific nightmares.",
+    "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/491.gif",
+    "submitted_by": "MDSingh",
+    "timestamp": "2025-10-10T09:36:15.693Z"
+  },
+  {
+    "id": 656,
+    "name": "Froakie",
+    "note": "yep it evolves to one of the coolest pokemons",
+    "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/656.png",
+    "submitted_by": "Bhuwan",
+    "timestamp": "2025-10-10T11:39:43.735Z"
+  },
+  {
+    "id": 658,
+    "name": "Greninja",
+    "note": "mega form is good but its bond evolution uff",
+    "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/658.png",
+    "submitted_by": "Bhuwan",
+    "timestamp": "2025-10-10T11:00:51.509Z"
   }
 ]

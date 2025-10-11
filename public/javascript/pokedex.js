@@ -4,7 +4,6 @@ const openBtn = document.getElementById("open-btn");
 const closeBtn = document.getElementById("close-btn");
 const searchBtn = document.getElementById("search-btn");
 const searchContainer = document.querySelector(".search-container");
-// UPDATED: Renamed from searchIdInput to searchNameInput
 const searchNameInput = document.getElementById("searchId"); 
 const searchGoBtn = document.getElementById("search-go");  
 const detailView = document.querySelector(".detail-view");
@@ -18,11 +17,9 @@ let pokedexData = [];
 let searchOpen = false;
 let selectedSprite = null;
 
-
 // =======================================================
 // 1. UTILITY FUNCTIONS (for visual feedback)
 // =======================================================
-
 function showTemporaryMessage(message, color) {
     searchContainer.style.display = "none";
     pokemonDisplay.style.display = "none";
@@ -50,11 +47,9 @@ function hideTemporaryMessage() {
     }
 }
 
-
 // =======================================================
 // 2. DATA LOADING AND RENDERING
 // =======================================================
-
 async function loadPokedex() {
     try {
         const response = await fetch(DATA_URL);
@@ -87,13 +82,11 @@ function renderSprites(data) {
         spriteImg.alt = `${pokemon.name} animated sprite`;
         spriteImg.className = 'pokemon-sprite';
         
-        // Store the dynamic data attributes on the DOM element
         spriteImg.dataset.id = pokemon.id;
         spriteImg.dataset.name = pokemon.name;
         spriteImg.dataset.note = pokemon.note; 
         spriteImg.dataset.submitter = pokemon.submitted_by; 
 
-        // Attach event listener for detail view
         spriteImg.addEventListener("click", () => showDetailView(spriteImg));
         
         pokemonDisplay.appendChild(spriteImg);
@@ -114,7 +107,6 @@ function showDetailView(spriteElement) {
         detailSprite.innerHTML = '';
         detailInfo.innerHTML = '';
 
-        // Display the data
         detailSprite.innerHTML = `<img src="${spriteElement.src}" alt="${spriteElement.dataset.name}" />`;
         detailInfo.innerHTML = `
             <h2>#${spriteElement.dataset.id} ${spriteElement.dataset.name}</h2>
@@ -125,7 +117,6 @@ function showDetailView(spriteElement) {
         detailView.style.display = "flex";
     }
 }
-
 
 // =======================================================
 // 3. UI CONTROL LOGIC 
@@ -153,6 +144,7 @@ closeBtn.addEventListener("click", () => {
 });
 
 // --- Toggle Search ---
+// --- Toggle Search ---
 searchBtn.addEventListener("click", () => {
     searchOpen = !searchOpen;
     if (searchOpen) {
@@ -161,11 +153,16 @@ searchBtn.addEventListener("click", () => {
         detailView.style.display = "none";
     } else {
         searchContainer.style.display = "none";
+        
+        // --- ADDED: Reset to full Pokedex list when search is closed ---
+        renderSprites(pokedexData); 
+        
         pokemonDisplay.style.display = "flex";
+        // --- END ADDED ---
     }
 });
 
-// --- Search Functionality (Name Lookup) ---
+// --- Search Functionality (Trainer Name Lookup) ---
 searchGoBtn.addEventListener("click", () => {
     const searchName = searchNameInput.value.trim().toLowerCase();
     
@@ -179,49 +176,53 @@ searchGoBtn.addEventListener("click", () => {
         return;
     }
     
-    // Find ALL entries submitted by this trainer
     const matchingPokemon = pokedexData.filter(p => 
         p.submitted_by.toLowerCase().includes(searchName)
     );
     
     if (matchingPokemon.length > 0) {
-        
-        // If one match is found, jump straight to the detail view for that one
+
         if (matchingPokemon.length === 1) {
-             const pokemon = matchingPokemon[0];
-             const targetSprite = document.querySelector(`.pokemon-sprite[data-id="${pokemon.id}"]`);
-             if (targetSprite) {
+            // Single match → show detail view
+            const pokemon = matchingPokemon[0];
+            const targetSprite = document.querySelector(`.pokemon-sprite[data-id="${pokemon.id}"]`);
+            if (targetSprite) {
                 showDetailView(targetSprite);
-                searchNameInput.value = ''; // Clear input on success
-             } else {
-                 showTemporaryMessage(`Data found for ${pokemon.name}, but sprite element missing.`, "#ff00ff");
-             }
+                searchNameInput.value = '';
+            } else {
+                showTemporaryMessage(`Data found for ${pokemon.name}, but sprite element missing.`, "#ff00ff");
+            }
         } else {
-            // Multiple matches: Show only the matching sprites in the display row
-            // 1. Hide search/details
+            // Multiple matches → show all matching sprites
             searchContainer.style.display = "none";
             detailView.style.display = "none";
-            
-            // 2. Filter the rendered sprites
             pokemonDisplay.innerHTML = '';
+
             matchingPokemon.forEach(pokemon => {
-                const targetSprite = document.querySelector(`.pokemon-sprite[data-id="${pokemon.id}"]`);
-                if (targetSprite) {
-                    pokemonDisplay.appendChild(targetSprite.cloneNode(true)); // Clone and display the sprite
-                }
+                const spriteImg = document.createElement('img');
+                spriteImg.src = pokemon.sprite;
+                spriteImg.alt = `${pokemon.name} animated sprite`;
+                spriteImg.className = 'pokemon-sprite';
+
+                spriteImg.dataset.id = pokemon.id;
+                spriteImg.dataset.name = pokemon.name;
+                spriteImg.dataset.note = pokemon.note;
+                spriteImg.dataset.submitter = pokemon.submitted_by;
+
+                spriteImg.addEventListener("click", () => showDetailView(spriteImg));
+
+                pokemonDisplay.appendChild(spriteImg);
             });
+
             pokemonDisplay.style.display = "flex";
-
-            // Temporary message to explain the filtered view
-            showTemporaryMessage(`Found ${matchingPokemon.length} entries. Now showing filtered results.`, "#00ffff");
-
+            showTemporaryMessage(`Found ${matchingPokemon.length} entries with the name "${searchName}". Showing all matching Pokémon.`, "#00ffff");
         }
+
     } else {
-        // Failure: Pokemon not found in the loaded data
+        // No matches found
         showTemporaryMessage(`No Pokémon submitted by trainer "${searchName}" found.`, "#ff00ff");
     }
 });
-
 
 // --- Detail View Close Listener ---
 detailView.addEventListener("click", (e) => {
@@ -232,6 +233,5 @@ detailView.addEventListener("click", (e) => {
     }
 });
 
-
-// Initial Load: Load data on page load so it's ready quickly
+// Initial load
 loadPokedex();

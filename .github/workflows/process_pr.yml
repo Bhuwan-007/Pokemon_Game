@@ -1,86 +1,87 @@
 name: Process New Pokedex Entry
 
-# Use pull_request_target instead of pull_request
 on:
+  # Use pull_request_target to allow running with write permissions on external forks
   pull_request_target:
     types: [opened, synchronize, reopened]
-    paths:
-      - 'submissions/*.yaml'
 
 jobs:
   update-pokedex:
     runs-on: ubuntu-latest
-
     permissions:
-      contents: write
-      pull-requests: write
+      contents: write 
+      pull-requests: write # Critical for closing the PR
 
     steps:
-      - name: Checkout code
+      # 1️⃣ Checkout Base Branch (main) - To get the latest JSON to read from
+      - name: Checkout Base Branch
         uses: actions/checkout@v4
         with:
+          ref: ${{ github.base_ref }}
           fetch-depth: 0
 
-      - name: Set up Node.js
+      # 2️⃣ Fetch the Contributor's Changes (The Submission File)
+      - name: Fetch PR Changes
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          path: ./.tmp-pr-changes # Download PR changes into a temporary folder
+          token: ${{ secrets.GITHUB_TOKEN }}
+          
+      # 3️⃣ Setup Node.js & Install dependencies
+      - name: Setup & Install dependencies
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: 20
+      - run: npm ci
 
-      - name: Install dependencies
-        run: npm ci
-
+      # 4️⃣ Run validation & update script
       - name: Run Validation & Update Script
-        id: validate
-        run: |
-          echo "Running Pokedex validation..."
-          node scripts/update-pokedex.js ${{ github.event.pull_request.number }}
-        continue-on-error: true
+        run: node scripts/update-pokedex.js ${{ github.event.pull_request.number }}
         env:
-          GITHUB_TOKEN: ${{ secrets.GH_PAT }}
-          GITHUB_REPOSITORY: ${{ github.repository }}
-
-      - name: Check validation result
-        id: check
-        run: |
-          if [ "${{ steps.validate.outcome }}" != "success" ]; then
-            echo "❌ Validation failed"
-            echo "result=failed" >> $GITHUB_OUTPUT
-            exit 1
-          else
-            echo "✅ Validation passed"
-            echo "result=success" >> $GITHUB_OUTPUT
-          fi
-
-      - name: Comment if validation fails
-        if: failure()
-        uses: peter-evans/create-or-update-comment@v4
-        with:
-          issue-number: ${{ github.event.pull_request.number }}
-          body: |
-            ❌ **Pokedex Validation Failed**
-            - Please make sure:
-              1. Your YAML file is inside `/submissions/`
-              2. The Pokémon name is spelled correctly and exists on [PokeAPI](https://pokeapi.co/)
-              3. The YAML format matches the required template
-
-      - name: Commit JSON Changes
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_REPOSITORY: ${{ github.repository }} 
+          
+      # 5️⃣ Commit JSON Changes to the main branch
+      # This step makes the data live on the main branch.
+      - name: Commit JSON Changes to Main
         if: success()
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
-          commit_message: 'Pokedex Update: Added new entry from PR #${{ github.event.pull_request.number }}'
-          files: 'public/data/pokedex_data.json'
+          commit_message: 'AUTO: Pokedex entry added from PR #${{ github.event.pull_request.number }}'
+          files: public/data/pokedex_data.json
+          branch: ${{ github.base_ref }} # Commit directly to 'main'
+          commit_user_name: 'GitHub Actions Bot'
+          commit_user_email: 'actions@github.com'
+          token: ${{ secrets.GH_PAT }} # Use the powerful PAT
 
-      - name: Install GitHub CLI
+      # 6️⃣ Close the Pull Request (Final Step)
+      # This step runs because the data is already on the main branch (from step 5).
+      # It resolves the race condition by simply closing the PR and deleting the source branch.
+      - name: Close PR and Delete Branch
         if: success()
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y gh
-
-      - name: Auto Merge PR
-        if: success()
-        run: |
-          echo "Attempting auto-merge for PR #${{ github.event.pull_request.number }}"
-          echo "${{ secrets.GH_PAT }}" | gh auth login --with-token
-          gh pr merge ${{ github.event.pull_request.number }} --squash --delete-branch
-        env:
-          GH_PAT: ${{ secrets.GH_PAT }}
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GH_PAT }}
+          script: |
+            const pr = context.payload.pull_request;
+            
+            // 1. Close the PR
+            await github.rest.pulls.update({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: pr.number,
+              state: 'closed'
+            });
+            
+            // 2. Delete the source branch
+            // This final cleanup should resolve the "unmerged commits" warning.
+            try {
+              await github.rest.git.deleteRef({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                ref: `heads/${pr.head.ref}`,
+              });
+            } catch (error) {
+              console.log('Could not delete branch. It may have been deleted already.');
+            }

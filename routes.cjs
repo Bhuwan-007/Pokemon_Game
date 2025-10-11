@@ -23,6 +23,16 @@ app.get("/pokelab", (req, res) => {
 app.get("/pokedex", (req, res) => {
     res.sendFile(path.join(__dirname, 'pokedex.html'));
 })
+app.get("/arena", (req, res) => {
+    res.sendFile(path.join(__dirname, 'arena.html'));
+})
+app.get("/generator", (req, res) => {
+    res.sendFile(path.join(__dirname, 'generator.html'));
+})
+app.get("/card-generator", (req, res) => {
+    res.sendFile(path.join(__dirname, 'card-generator.html'));
+})
+
 
 
 app.listen(3000, () => {
