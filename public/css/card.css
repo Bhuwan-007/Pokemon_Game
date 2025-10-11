@@ -1,0 +1,80 @@
+body {
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+  width: 100vw;
+  background: url('/elements/card-generator.png') no-repeat center center fixed;
+  background-size: cover;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: 'Orbitron', sans-serif; /* Futuristic racing-style font */
+}
+
+.progress {
+  font-size: 60px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 4px;
+  color: #00ffff; 
+    
+    text-shadow: 
+        0 0 10px #00aaff, /* Lighter Blue */
+        0 0 20px #00ffff, /* Pure Cyan */
+        0 0 30px #00aaff, 
+        0 0 40px #0077ff;
+  animation: pulseGlow 2.5s infinite alternate;
+}
+
+/* Subtle glowing pulse */
+@keyframes pulseGlow {
+    0% {
+        text-shadow:
+            0 0 10px #00ffaa, 
+            0 0 20px #00ffff, 
+            0 0 30px #00ffaa;
+        transform: scale(1);
+    }
+    100% {
+        text-shadow:
+            0 0 15px #00aaff, 
+            0 0 35px #0077ff, /* Increased blur for wider pulse */
+            0 0 50px #0044cc;
+        transform: scale(1.02); 
+    }
+}
+
+#home-btn {
+    position: fixed; 
+    top: 20px;
+    left: 20px;
+    z-index: 100;
+    
+    padding: 10px 20px;
+    font-family: 'Orbitron', sans-serif; 
+    font-size: 1.1rem;
+    cursor: pointer;
+    text-decoration: none;
+    
+    color: #fff; 
+    background: rgba(10, 10, 30, 0.9); /* Very dark background */
+    border: 1px solid #00aaff; /* Sharp, blue border */
+    border-radius: 4px; /* Less rounded for a sharper look */
+    transition: all 0.2s ease-out; 
+    
+    /* Subtle initial glow */
+    box-shadow: 0 0 5px rgba(0, 170, 255, 0.5); 
+}
+
+#home-btn:hover {
+    color: #00ffff;
+    background: rgba(10, 10, 30, 0.5);
+    border-color: #00ffff; 
+    
+    /* Intense blue-green glow on hover */
+    box-shadow: 0 0 20px #00ffaa, inset 0 0 5px #00ffaa; 
+    transform: scale(1.05); /* Slight lift effect */
+}
+
+/* Optional: Google Font */
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&display=swap');

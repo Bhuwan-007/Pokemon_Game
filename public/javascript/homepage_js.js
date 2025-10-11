@@ -41,3 +41,13 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 });
+
+const sliderNav = document.getElementById('slider-nav');
+
+document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape') {
+        if (sliderNav.style.left === '0px') {
+            sliderNav.style.left = '-325px'; // hide the slider
+        }
+    }
+});
