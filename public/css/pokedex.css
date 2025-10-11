@@ -151,6 +151,10 @@ body {
   z-index: 2;
   display: flex;
 }
+.detail-sprite {
+    /* Add margin to the right to create space */
+    margin-right: 30px; /* Adjust this value as needed */
+}
 
 .detail-sprite img {
   width: 300px;
