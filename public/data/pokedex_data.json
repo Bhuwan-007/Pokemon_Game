@@ -48,6 +48,14 @@
     "timestamp": "2025-10-10T11:08:41.937Z"
   },
   {
+    "id": 249,
+    "name": "Lugia",
+    "note": "It is said that this Pokémon quietly spends its time deep at the bottom of the sea because its wings are too powerful to be used in flight.",
+    "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/249.gif",
+    "submitted_by": "Bhavya",
+    "timestamp": "2025-10-13T07:05:37.808Z"
+  },
+  {
     "id": 257,
     "name": "Blaziken",
     "note": "its fire and fighting type is so cool",
