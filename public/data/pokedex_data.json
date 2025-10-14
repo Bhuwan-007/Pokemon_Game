@@ -40,6 +40,14 @@
     "timestamp": "2025-10-10T17:58:53.424Z"
   },
   {
+    "id": 150,
+    "name": "Mewtwo",
+    "note": "It was created by a scientist after years of horrific gene splicing and DNA engineering experiments.",
+    "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/150.gif",
+    "submitted_by": "Bhavya",
+    "timestamp": "2025-10-14T08:16:47.556Z"
+  },
+  {
     "id": 190,
     "name": "Aipom",
     "note": "the design is cool ngl",
